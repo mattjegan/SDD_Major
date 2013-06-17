@@ -1,7 +1,7 @@
 ## bw_Cons.py
 ##
 ## Written by Matthew Egan
-## Last Revised: 14th June 2013
+## Last Revised: 18th June 2013
 
 WIDTH_THRESHOLD = 1280
 WIDTH_MEDIUM_THRESHOLD = 960
@@ -17,3 +17,4 @@ HEIGHT_SMALL = 360
 
 ## Positions
 ORIGIN = (0,0)
+MID_TITLE_POS = (185, 30)
