@@ -42,7 +42,7 @@ def main():
     currentScreen = "Title"
     # Application Loop
     while running:
-        if currentScreen == "Title": displayTitleScreen(screen, size)
+        if currentScreen == "Title": currentScreen = displayTitleScreen(screen, size)
         elif currentScreen == "Login": pass
         elif currentScreen == "NewUser": pass
         elif currentScreen == "HighScores": pass
