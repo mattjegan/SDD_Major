@@ -1,3 +1,3 @@
-echo "Hello World!"
-cd /Users/eganm/Dropbox/SDD_MajorWork/Part\ 2/Program/src/
+echo "-- Running bw_Main.py now --"
 python bw_Main.py
+echo "-- PROGRAM COMPLETE --"

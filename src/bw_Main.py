@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 14th June 2013
+## Last Revision: 21st June 2013
 
 import os
 import sys
@@ -39,16 +39,26 @@ def main():
     pygame.display.set_caption("Battle Wizards")
 
     running = True
-    currentScreen = "Title"
+    currentScreen = TITLE
     # Application Loop
     while running:
-        if currentScreen == "Title": currentScreen = displayTitleScreen(screen, size)
-        elif currentScreen == "Login": pass
-        elif currentScreen == "NewUser": pass
-        elif currentScreen == "HighScores": pass
-        elif currentScreen == "Help": pass
-        elif currentScreen == "Game": pass
-        elif currentScreen == "Exit": running = False
+        if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size)
+        elif currentScreen == LOGIN: 
+            print LOGIN
+            break
+        elif currentScreen == NEWUSER: 
+            print NEWUSER
+            break
+        elif currentScreen == HIGHSCORES: 
+            print HIGHSCORES
+            break
+        elif currentScreen == HELP: 
+            print HELP
+            break
+        elif currentScreen == GAME: 
+            print GAME
+            break
+        elif currentScreen == EXITGAME: running = False
         pygame.display.update()
 
     print "END OF PROGRAM"
