@@ -43,9 +43,7 @@ def main():
     # Application Loop
     while running:
         if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size)
-        elif currentScreen == LOGIN: 
-            print LOGIN
-            break
+        elif currentScreen == LOGIN: currentScreen = displayLoginScreen(screen, size)
         elif currentScreen == NEWUSER: 
             print NEWUSER
             break
