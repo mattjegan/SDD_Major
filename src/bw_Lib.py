@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 21st June 2013
+## Last Revision: 25th June 2013
 
 import os
 import sys
@@ -166,7 +166,7 @@ def displayLoginScreen(screen, size):
     screen.blit(bgImage, ORIGIN)
 
     if size == "L":
-        screen.blit(loginTextImg, LRG_TITLE_POS)
+        screen.blit(loginTextImg, LRG_LOGIN_TITLE_POS)
         screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
         screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
         screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
