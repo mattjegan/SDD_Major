@@ -6,6 +6,7 @@
 import os
 import sys
 import time
+import string
 import pygame
 from bw_Cons import *
 from pygame.locals import *
@@ -124,7 +125,13 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
         elif event.type == KEYDOWN:
-            if event.key <= K_z and event.key >= K_a:
+            mods = pygame.key.get_mods()        
+            if mods & KMOD_LSHIFT and event.key <= K_z and event.key >= K_a:
+                if onUserField:
+                    username += string.upper(str(pygame.key.name(event.key)))
+                elif onPassField:
+                    password += string.upper(str(pygame.key.name(event.key)))
+            elif event.key <= K_z and event.key >= K_a:
                 if onUserField:
                     username += str(pygame.key.name(event.key))
                 elif onPassField:
@@ -132,12 +139,6 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
             elif event.key == K_BACKSPACE:
                 if onUserField: username = username[:-1]
                 elif onPassField: password = password[:-1]
-            ## Capitals
-            #elif event.key <= K_z and event.key >= K_a and (event.key == K_LSHIFT or event.key == K_RSHIFT):
-            #    if onUserField:
-            #        username += str(pygame.key.name(event.key))
-            #    elif onPassField:
-            #        password += str(pygame.key.name(event.key))
 
     # Display Debug Data
     #print onUserField, onPassField, username, password
