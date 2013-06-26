@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 25th June 2013
+## Last Revision: 26th June 2013
 
 import os
 import sys
@@ -40,10 +40,14 @@ def main():
 
     running = True
     currentScreen = TITLE
+    username = ""
+    password = ""
+    onUser = False
+    onPass = False
     # Application Loop
     while running:
-        if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size)
-        elif currentScreen == LOGIN: currentScreen = displayLoginScreen(screen, size)
+        if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
+        elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass = displayLoginScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == NEWUSER: 
             print NEWUSER
             break

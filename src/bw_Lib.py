@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 25th June 2013
+## Last Revision: 26th June 2013
 
 import os
 import sys
@@ -114,7 +114,7 @@ def displayTitleScreen(screen, size):
 
     return screenToGo
 
-def displayLoginScreen(screen, size):
+def displayLoginScreen(screen, size, username, password, onUserField, onPassField):
     mouseDown = False
     # Event Loop
     for event in pygame.event.get():
@@ -123,6 +123,24 @@ def displayLoginScreen(screen, size):
             sys.exit()
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
+        elif event.type == KEYDOWN:
+            if event.key <= K_z and event.key >= K_a:
+                if onUserField:
+                    username += str(pygame.key.name(event.key))
+                elif onPassField:
+                    password += str(pygame.key.name(event.key))
+            elif event.key == K_BACKSPACE:
+                if onUserField: username = username[:-1]
+                elif onPassField: password = password[:-1]
+            ## Capitals
+            #elif event.key <= K_z and event.key >= K_a and (event.key == K_LSHIFT or event.key == K_RSHIFT):
+            #    if onUserField:
+            #        username += str(pygame.key.name(event.key))
+            #    elif onPassField:
+            #        password += str(pygame.key.name(event.key))
+
+    # Display Debug Data
+    #print onUserField, onPassField, username, password
 
     # Get image src
     if size == "L":
@@ -133,6 +151,8 @@ def displayLoginScreen(screen, size):
         fieldSrc = "rsrc/large/login_Field.png"
         confirmSrc = "rsrc/large/login_Confirm.png"
         exitSrc = "rsrc/large/title_Exit.png"
+        field1Pos = LRG_LOGIN_FIELD1_POS
+        field2Pos = LRG_LOGIN_FIELD2_POS
         confirmPos = LRG_LOGIN_CONFIRM_POS
         exitPos = LRG_LOGIN_EXIT_POS
     elif size == "M":
@@ -149,18 +169,32 @@ def displayLoginScreen(screen, size):
     confirmImg = pygame.image.load(confirmSrc).convert_alpha()
     exitImg = pygame.image.load(exitSrc).convert_alpha()
 
+    # Load Letters
+    letterDict = {} # A->Z->a->z filled
+    for letterFile in os.listdir("rsrc/large/alphabet"):
+        if letterFile[0] != "." and letterFile[-3:] != ".py":
+            newLetterPath = "rsrc/large/alphabet/" + letterFile
+            newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+            letterDict[letterFile[2]] = newLetterImage
+    
+
     # Create buttons
+    field1Btn = Button(fieldImg, field1Pos)
+    field2Btn = Button(fieldImg, field2Pos)
     confirmBtn = Button(confirmImg, confirmPos)
     exitBtn = Button(exitImg, exitPos)
 
     mousePos = pygame.mouse.get_pos()
 
     # Check Actions
+    screenToGo = LOGIN
     if mouseDown:
-        if confirmBtn.checkTouch(mousePos): print "Pressed Confirm"
+        if field1Btn.checkTouch(mousePos): onUserField = True; onPassField = False
+        elif field2Btn.checkTouch(mousePos): onPassField = True; onUserField = False
+        elif confirmBtn.checkTouch(mousePos): onUserField = False; onPassField = False; print "Pressed Confirm"; screenToGo = TITLE
         elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
-        else: screenToGo = LOGIN
-    else: screenToGo = LOGIN
+        else: onUserField = False; onPassField = False; screenToGo = LOGIN
+    
 
     # Blit
     screen.blit(bgImage, ORIGIN)
@@ -171,7 +205,18 @@ def displayLoginScreen(screen, size):
         screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
         screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
         screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
+
+        totalWidth = 0
+        for e, letter in enumerate(username[::-1]):
+            totalWidth += letterDict[letter].get_width()
+            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] - totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+
+        totalWidth = 0
+        for e, letter in enumerate(password[::-1]):
+            totalWidth += letterDict[letter].get_width()
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] - totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+
         screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
 
-    return screenToGo
+    return screenToGo, username, password, onUserField, onPassField
