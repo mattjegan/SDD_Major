@@ -191,7 +191,12 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     if mouseDown:
         if field1Btn.checkTouch(mousePos): onUserField = True; onPassField = False
         elif field2Btn.checkTouch(mousePos): onPassField = True; onUserField = False
-        elif confirmBtn.checkTouch(mousePos): onUserField = False; onPassField = False; print "Pressed Confirm"; screenToGo = TITLE
+        elif confirmBtn.checkTouch(mousePos): 
+            onUserField = False
+            onPassField = False
+            print "Pressed Confirm"
+            print checkLogin(username, password), "username/password"
+            screenToGo = TITLE
         elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
         else: onUserField = False; onPassField = False; screenToGo = LOGIN
     
@@ -220,3 +225,17 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
 
     return screenToGo, username, password, onUserField, onPassField
+
+def checkLogin(username, password):
+    userFile = open("userFile.txt", "rU")
+    userData = [line for line in userFile]
+    userFile.close()
+
+    isValid = False
+    for line in userData:
+        scannedUser, scannedPass = line.split(";")
+        if scannedUser == username and scannedPass == password:
+            isValid = True
+            break
+
+    return isValid
