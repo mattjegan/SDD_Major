@@ -282,3 +282,166 @@ def checkLogin(username, password):
             break
 
     return isValid
+
+def displayNewUserScreen(screen, size, username, password, onUserField, onPassField):
+    mouseDown = False
+    # Event Loop
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            mouseDown = True
+        elif event.type == KEYDOWN:
+            mods = pygame.key.get_mods()        
+            if mods & KMOD_LSHIFT and event.key <= K_z and event.key >= K_a:
+                if onUserField:
+                    username += string.upper(str(pygame.key.name(event.key)))
+                elif onPassField:
+                    password += string.upper(str(pygame.key.name(event.key)))
+            elif event.key <= K_z and event.key >= K_a:
+                if onUserField:
+                    username += str(pygame.key.name(event.key))
+                elif onPassField:
+                    password += str(pygame.key.name(event.key))
+            elif event.key == K_BACKSPACE:
+                if onUserField: username = username[:-1]
+                elif onPassField: password = password[:-1]
+
+    # Display Debug Data
+    #print onUserField, onPassField, username, password
+
+    # Get image src
+    if size == "L":
+        bgImageSrc = "rsrc/large/title_BG.png"
+        newUserTextSrc = "rsrc/large/createAcc_Text.png"
+        usernameSrc = "rsrc/large/login_Username.png"
+        passwordSrc = "rsrc/large/login_Password.png"
+        fieldSrc = "rsrc/large/login_Field.png"
+        confirmSrc = "rsrc/large/login_Confirm.png"
+        exitSrc = "rsrc/large/title_Exit.png"
+        field1Pos = LRG_LOGIN_FIELD1_POS
+        field2Pos = LRG_LOGIN_FIELD2_POS
+        confirmPos = LRG_LOGIN_CONFIRM_POS
+        exitPos = LRG_LOGIN_EXIT_POS
+    elif size == "M":
+        bgImageSrc = "rsrc/medium/title_BG.png"
+        newUserTextSrc = "rsrc/medium/createAcc_Text.png" # Lost file
+        usernameSrc = "rsrc/medium/login_Username.png"
+        passwordSrc = "rsrc/medium/login_Password.png"
+        fieldSrc = "rsrc/medium/login_Field.png"
+        confirmSrc = "rsrc/medium/login_Confirm.png"
+        exitSrc = "rsrc/medium/title_Exit.png"
+        field1Pos = MED_LOGIN_FIELD1_POS
+        field2Pos = MED_LOGIN_FIELD2_POS
+        confirmPos = MED_LOGIN_CONFIRM_POS
+        exitPos = MED_LOGIN_EXIT_POS
+    elif size == "S":
+        pass
+
+    # Load Images
+    bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+    newUserTextImg = pygame.image.load(newUserTextSrc).convert_alpha()
+    usernameImg = pygame.image.load(usernameSrc).convert_alpha()
+    passwordImg = pygame.image.load(passwordSrc).convert_alpha()
+    fieldImg = pygame.image.load(fieldSrc).convert_alpha()
+    confirmImg = pygame.image.load(confirmSrc).convert_alpha()
+    exitImg = pygame.image.load(exitSrc).convert_alpha()
+
+    # Load Letters
+    letterDict = {} # A->Z->a->z filled
+    if size == "L":
+        for letterFile in os.listdir("rsrc/large/alphabet"):
+            if letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/large/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
+    elif size == "M":
+        for letterFile in os.listdir("rsrc/medium/alphabet"):
+            if letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/medium/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
+
+    # Create buttons
+    field1Btn = Button(fieldImg, field1Pos)
+    field2Btn = Button(fieldImg, field2Pos)
+    confirmBtn = Button(confirmImg, confirmPos)
+    exitBtn = Button(exitImg, exitPos)
+
+    mousePos = pygame.mouse.get_pos()
+
+    # Check Actions
+    screenToGo = NEWUSER
+    if mouseDown:
+        if field1Btn.checkTouch(mousePos): onUserField = True; onPassField = False
+        elif field2Btn.checkTouch(mousePos): onPassField = True; onUserField = False
+        elif confirmBtn.checkTouch(mousePos) and username != "" and password != "": 
+            onUserField = False
+            onPassField = False
+            isValid = checkValidUser(username, password)
+            print "isValid", isValid
+            ## 0 = Invalid password, 1 = Valid, 2 = Invalid username
+            if isValid == True: storeNewUser(username, password); screenToGo = GAME
+            elif isValid == False: pass
+            elif isValid == 2: pass 
+            screenToGo = TITLE
+        elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
+        else: onUserField = False; onPassField = False; screenToGo = NEWUSER
+    
+
+    # Blit
+    screen.blit(bgImage, ORIGIN)
+
+    if size == "L":
+        screen.blit(newUserTextImg, LRG_LOGIN_TITLE_POS)
+        screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
+        screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
+        screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
+        screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
+
+        totalWidth = 0
+        for e, letter in enumerate(username):
+            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        totalWidth = 0
+        for e, letter in enumerate(password):
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
+        screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
+    elif size == "M":
+        screen.blit(newUserTextImg, MED_NEWUSER_TITLE_POS)
+        screen.blit(usernameImg, MED_LOGIN_USERNAME_POS)
+        screen.blit(fieldImg, MED_LOGIN_FIELD1_POS)
+        screen.blit(passwordImg, MED_LOGIN_PASSWORD_POS)
+        screen.blit(fieldImg, MED_LOGIN_FIELD2_POS)
+
+        totalWidth = 0
+        for e, letter in enumerate(username):
+            screen.blit(letterDict[letter], (MED_USERNAME_START_POS[0] + totalWidth, MED_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        totalWidth = 0
+        for e, letter in enumerate(password):
+            screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
+        screen.blit(exitImg, MED_LOGIN_EXIT_POS)
+
+    return screenToGo, username, password, onUserField, onPassField
+
+def checkValidUser(username, password):
+    isValid = False
+    if len(username) >= 6 and len(password) >= 6: isValid = True
+    elif len(username) < 6: isValid = 2
+    elif len(password) < 6: isValid = 0
+    return isValid
+
+def storeNewUser(username, password):
+    userFile = open("userFile.txt", "a")
+    userFile.write(username+";"+password)
+    userFile.close()
