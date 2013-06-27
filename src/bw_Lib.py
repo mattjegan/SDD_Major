@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 26th June 2013
+## Last Revision: 27th June 2013
 
 import os
 import sys
@@ -62,7 +62,13 @@ def displayTitleScreen(screen, size):
         loginSrc = "rsrc/medium/title_Login.png"
         createSrc = "rsrc/medium/title_CreateAcc.png"
         leaderSrc = "rsrc/medium/title_Leaderboards.png"
+        helpSrc = "rsrc/medium/title_Help.png"
         exitSrc = "rsrc/medium/title_Exit.png"
+        loginPos = MED_LOGIN_POS
+        createPos = MED_CREATE_POS
+        leaderPos = MED_LEADER_POS
+        helpPos = MED_HELP_POS
+        exitPos = MED_EXIT_POS
     elif size == "S": 
         bgImageSrc = "rsrc/smallBG.png"
 
@@ -109,6 +115,7 @@ def displayTitleScreen(screen, size):
         screen.blit(loginImg, MED_LOGIN_POS)
         screen.blit(createImg, MED_CREATE_POS)
         screen.blit(leaderImg, MED_LEADER_POS)
+        screen.blit(helpImg, MED_HELP_POS)
         screen.blit(exitImg, MED_EXIT_POS)
     elif size == "S":
         pass
@@ -157,13 +164,23 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         confirmPos = LRG_LOGIN_CONFIRM_POS
         exitPos = LRG_LOGIN_EXIT_POS
     elif size == "M":
-        pass
+        bgImageSrc = "rsrc/medium/title_BG.png"
+        #loginTextSrc = "rsrc/medium/login_Text.png" # Lost file
+        usernameSrc = "rsrc/medium/login_Username.png"
+        passwordSrc = "rsrc/medium/login_Password.png"
+        fieldSrc = "rsrc/medium/login_Field.png"
+        confirmSrc = "rsrc/medium/login_Confirm.png"
+        exitSrc = "rsrc/medium/title_Exit.png"
+        field1Pos = MED_LOGIN_FIELD1_POS
+        field2Pos = MED_LOGIN_FIELD2_POS
+        confirmPos = MED_LOGIN_CONFIRM_POS
+        exitPos = MED_LOGIN_EXIT_POS
     elif size == "S":
         pass
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
-    loginTextImg = pygame.image.load(loginTextSrc).convert_alpha()
+    #loginTextImg = pygame.image.load(loginTextSrc).convert_alpha()
     usernameImg = pygame.image.load(usernameSrc).convert_alpha()
     passwordImg = pygame.image.load(passwordSrc).convert_alpha()
     fieldImg = pygame.image.load(fieldSrc).convert_alpha()
@@ -172,12 +189,18 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
 
     # Load Letters
     letterDict = {} # A->Z->a->z filled
-    for letterFile in os.listdir("rsrc/large/alphabet"):
-        if letterFile[0] != "." and letterFile[-3:] != ".py":
-            newLetterPath = "rsrc/large/alphabet/" + letterFile
-            newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-            letterDict[letterFile[2]] = newLetterImage
-    
+    if size == "L":
+        for letterFile in os.listdir("rsrc/large/alphabet"):
+            if letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/large/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
+    elif size == "M":
+        for letterFile in os.listdir("rsrc/medium/alphabet"):
+            if letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/medium/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
 
     # Create buttons
     field1Btn = Button(fieldImg, field1Pos)
@@ -213,17 +236,36 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
 
         totalWidth = 0
-        for e, letter in enumerate(username[::-1]):
+        for e, letter in enumerate(username):
+            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
-            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] - totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
 
         totalWidth = 0
-        for e, letter in enumerate(password[::-1]):
+        for e, letter in enumerate(password):
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
-            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] - totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
 
         screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
+    elif size == "M":
+        #screen.blit(loginTextImg, MED_LOGIN_TITLE_POS)
+        screen.blit(usernameImg, MED_LOGIN_USERNAME_POS)
+        screen.blit(fieldImg, MED_LOGIN_FIELD1_POS)
+        screen.blit(passwordImg, MED_LOGIN_PASSWORD_POS)
+        screen.blit(fieldImg, MED_LOGIN_FIELD2_POS)
+
+        totalWidth = 0
+        for e, letter in enumerate(username):
+            screen.blit(letterDict[letter], (MED_USERNAME_START_POS[0] + totalWidth, MED_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        totalWidth = 0
+        for e, letter in enumerate(password):
+            screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+
+        screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
+        screen.blit(exitImg, MED_LOGIN_EXIT_POS)
 
     return screenToGo, username, password, onUserField, onPassField
 
