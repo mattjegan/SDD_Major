@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 26th June 2013
+## Last Revision: 27th June 2013
 
 import os
 import sys

@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 27th June 2013
+## Last Revision: 12th July 2013
 
 import os
 import sys
@@ -124,6 +124,7 @@ def displayTitleScreen(screen, size):
 
 def displayLoginScreen(screen, size, username, password, onUserField, onPassField):
     mouseDown = False
+    hide = True
     # Event Loop
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -180,7 +181,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
-    #loginTextImg = pygame.image.load(loginTextSrc).convert_alpha()
+    loginTextImg = pygame.image.load(loginTextSrc).convert_alpha()
     usernameImg = pygame.image.load(usernameSrc).convert_alpha()
     passwordImg = pygame.image.load(passwordSrc).convert_alpha()
     fieldImg = pygame.image.load(fieldSrc).convert_alpha()
@@ -191,7 +192,9 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     letterDict = {} # A->Z->a->z filled
     if size == "L":
         for letterFile in os.listdir("rsrc/large/alphabet"):
-            if letterFile[0] != "." and letterFile[-3:] != ".py":
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/large/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
@@ -242,8 +245,12 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
 
         totalWidth = 0
         for e, letter in enumerate(password):
-            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
+            if hide == False:
+                screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+                totalWidth += letterDict[letter].get_width()
+            else:
+                screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
+                totalWidth += asteriskImage.get_width()
 
         screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
@@ -285,6 +292,7 @@ def checkLogin(username, password):
 
 def displayNewUserScreen(screen, size, username, password, onUserField, onPassField):
     mouseDown = False
+    hide = True
     # Event Loop
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -352,7 +360,9 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
     letterDict = {} # A->Z->a->z filled
     if size == "L":
         for letterFile in os.listdir("rsrc/large/alphabet"):
-            if letterFile[0] != "." and letterFile[-3:] != ".py":
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/large/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
@@ -394,7 +404,7 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
     screen.blit(bgImage, ORIGIN)
 
     if size == "L":
-        screen.blit(newUserTextImg, LRG_LOGIN_TITLE_POS)
+        screen.blit(newUserTextImg, LRG_NEWUSER_TITLE_POS)
         screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
         screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
         screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
@@ -407,8 +417,12 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
 
         totalWidth = 0
         for e, letter in enumerate(password):
-            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
+            if hide == False:
+                screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+                totalWidth += letterDict[letter].get_width()
+            else:
+                screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
+                totalWidth += asteriskImage.get_width()
 
         screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
