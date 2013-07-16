@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 12th July 2013
+## Last Revision: 16th July 2013
 
 import os
 import sys
@@ -166,7 +166,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         exitPos = LRG_LOGIN_EXIT_POS
     elif size == "M":
         bgImageSrc = "rsrc/medium/title_BG.png"
-        #loginTextSrc = "rsrc/medium/login_Text.png" # Lost file
+        loginTextSrc = "rsrc/medium/login_Text.png"
         usernameSrc = "rsrc/medium/login_Username.png"
         passwordSrc = "rsrc/medium/login_Password.png"
         fieldSrc = "rsrc/medium/login_Field.png"
@@ -200,7 +200,9 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
                 letterDict[letterFile[2]] = newLetterImage
     elif size == "M":
         for letterFile in os.listdir("rsrc/medium/alphabet"):
-            if letterFile[0] != "." and letterFile[-3:] != ".py":
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/medium/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/medium/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
@@ -268,8 +270,12 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
 
         totalWidth = 0
         for e, letter in enumerate(password):
-            screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
+            if hide == False:
+                screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
+                totalWidth += letterDict[letter].get_width()
+            else:
+                screen.blit(asteriskImage, (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - asteriskImage.get_height()))
+                totalWidth += asteriskImage.get_width()
 
         screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, MED_LOGIN_EXIT_POS)
@@ -283,7 +289,7 @@ def checkLogin(username, password):
 
     isValid = False
     for line in userData:
-        scannedUser, scannedPass = line.split(";")
+        scannedUser, scannedPass = line.strip("\n").split(";")
         if scannedUser == username and scannedPass == password:
             isValid = True
             break
@@ -457,5 +463,5 @@ def checkValidUser(username, password):
 
 def storeNewUser(username, password):
     userFile = open("userFile.txt", "a")
-    userFile.write(username+";"+password)
+    userFile.write(username+";"+password+"\n")
     userFile.close()
