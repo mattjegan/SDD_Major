@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 16th July 2013
+## Last Revision: 21st July 2013
 
 import os
 import sys
@@ -465,3 +465,45 @@ def storeNewUser(username, password):
     userFile = open("userFile.txt", "a")
     userFile.write(username+";"+password+"\n")
     userFile.close()
+
+def displayHelpScreen(screen, size):
+    mouseDown = False
+    # Event Loop
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            mouseDown = True
+
+    if size == "L":
+        bgImageSrc = "rsrc/large/title_BG.png"
+        helpTxtSrc = "rsrc/large/help_Text.png"
+        helpBodySrc = "rsrc/large/help_Body.png"
+        helpDoneSrc = "rsrc/large/help_Done.png"
+
+    # Load Images
+    bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+    helpTxtImg = pygame.image.load(helpTxtSrc).convert_alpha()
+    helpBodyImg = pygame.image.load(helpBodySrc).convert_alpha()
+    helpDoneImg = pygame.image.load(helpDoneSrc).convert_alpha()
+
+    # Create Buttons
+    doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
+
+    # Handle Actions
+    mousePos = pygame.mouse.get_pos()
+    if mouseDown:
+        if doneBtn.checkTouch(mousePos): screenToGo = TITLE
+        else: screenToGo = HELP
+    else: screenToGo = HELP
+
+    # Render
+    screen.blit(bgImage, ORIGIN)
+
+    if size == "L":
+        screen.blit(helpTxtImg, LRG_HELP_TITLE_POS)
+        screen.blit(helpBodyImg, LRG_HELP_BODY_POS)
+        screen.blit(helpDoneImg, LRG_HELP_DONE_POS)
+
+    return screenToGo

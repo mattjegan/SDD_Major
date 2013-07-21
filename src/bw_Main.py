@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 27th June 2013
+## Last Revision: 21st July 2013
 
 import os
 import sys
@@ -52,9 +52,7 @@ def main():
         elif currentScreen == HIGHSCORES: 
             print HIGHSCORES
             break
-        elif currentScreen == HELP: 
-            print HELP
-            break
+        elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
         elif currentScreen == GAME: 
             print GAME
             break
