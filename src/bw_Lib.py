@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 21st July 2013
+## Last Revision: 25th July 2013
 
 import os
 import sys
@@ -481,6 +481,17 @@ def displayHelpScreen(screen, size):
         helpTxtSrc = "rsrc/large/help_Text.png"
         helpBodySrc = "rsrc/large/help_Body.png"
         helpDoneSrc = "rsrc/large/help_Done.png"
+    ## Images below are not available atm
+    elif size == "M":
+        bgImageSrc = "rsrc/medium/title_BG.png"
+        helpTxtSrc = "rsrc/medium/help_Text.png"
+        helpBodySrc = "rsrc/medium/help_Body.png"
+        helpDoneSrc = "rsrc/medium/help_Done.png"
+    elif size == "S":
+        bgImageSrc = "rsrc/small/title_BG.png"
+        helpTxtSrc = "rsrc/small/help_Text.png"
+        helpBodySrc = "rsrc/small/help_Body.png"
+        helpDoneSrc = "rsrc/small/help_Done.png"
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
@@ -505,5 +516,13 @@ def displayHelpScreen(screen, size):
         screen.blit(helpTxtImg, LRG_HELP_TITLE_POS)
         screen.blit(helpBodyImg, LRG_HELP_BODY_POS)
         screen.blit(helpDoneImg, LRG_HELP_DONE_POS)
+    elif size == "M":
+        screen.blit(helpTxtImg, MED_HELP_TITLE_POS)
+        screen.blit(helpBodyImg, MED_HELP_BODY_POS)
+        screen.blit(helpDoneImg, MED_HELP_DONE_POS)
+    elif size == "S":
+        screen.blit(helpTxtImg, SML_HELP_TITLE_POS)
+        screen.blit(helpBodyImg, SML_HELP_BODY_POS)
+        screen.blit(helpDoneImg, SML_HELP_DONE_POS)
 
     return screenToGo
