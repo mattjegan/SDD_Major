@@ -606,7 +606,14 @@ def playScrollingTextGame(screen, size):
             currentWord = ""
             score += 1
 
+        currentTime = time.time()
+        elapsedTime = currentTime - startTime
+        writeText(screen, str(elapsedTime), ORIGIN)
+        if elapsedTime >= 30:
+            running = False
+
         pygame.display.update()
+    return score
 
 def readFileIntoArray(fileName):
     f = open(fileName)
@@ -621,3 +628,37 @@ def sattoloShuffle(array):
         j = random.randint(0, i)
         array[j], array[i] = array[i], array[j]
     return array
+
+def writeText(screen, text, location):
+    pygame.font.init()
+    font = pygame.font.Font(None, 16)
+    obj = font.render(text, 1, (0,0,0))
+    screen.blit(obj, location)
+
+class Avatar:
+    def __init__(self, strength, magic, armor):
+        self.strength = 1
+        self.magic = 1
+        self.armor = 1
+
+def openStoreScreen(screen, size, score):
+    pass
+    running = True
+    points = score
+    avatar = Avatar(1, 1, 1)
+
+    while running:
+        # Event Loop
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                mouseDown = True
+
+def playBattleScene(avatar):
+    pass
+
+def submitScore(user, score):
+    pass
+    
