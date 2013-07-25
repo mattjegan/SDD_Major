@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 21st July 2013
+## Last Revision: 25th July 2013
 
 import os
 import sys
@@ -53,9 +53,7 @@ def main():
             print HIGHSCORES
             break
         elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
-        elif currentScreen == GAME: 
-            print GAME
-            break
+        elif currentScreen == GAME: playGame(screen, size)
         elif currentScreen == EXITGAME: running = False
         pygame.display.update()
 

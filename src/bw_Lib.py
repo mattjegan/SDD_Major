@@ -7,6 +7,7 @@ import os
 import sys
 import time
 import string
+import random
 import pygame
 from bw_Cons import *
 from pygame.locals import *
@@ -225,7 +226,10 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
             onPassField = False
             print "Pressed Confirm"
             print checkLogin(username, password), "username/password"
-            screenToGo = TITLE
+            if checkLogin(username, password):
+                screenToGo = GAME
+            else:
+                screenToGo = TITLE
         elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
         else: onUserField = False; onPassField = False; screenToGo = LOGIN
     
@@ -525,3 +529,95 @@ def displayHelpScreen(screen, size):
         screen.blit(helpDoneImg, SML_HELP_DONE_POS)
 
     return screenToGo
+
+def playGame(screen, size):
+    score = playScrollingTextGame(screen, size)
+    avatar = openStoreScreen(score)
+    playBattleScene(avatar)
+    submitScore(user, score)
+    screenToGo = TITLE
+    return screenToGo
+
+def playScrollingTextGame(screen, size):
+    running = True
+    score = 0
+
+    wordList = readFileIntoArray("wordList.txt")
+    for e, word in enumerate(wordList):
+        wordList[e] = word.strip("\r\n")
+
+    wordList = sattoloShuffle(wordList)
+
+    startTime = time.time()
+    currentWord = ""
+    wordOnScreen = ""
+    newWord = True
+
+    # Game Loop
+    while running:
+        # Event Loop
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:    
+                if event.key <= K_z and event.key >= K_a:
+                        currentWord += str(pygame.key.name(event.key))
+                elif event.key == K_BACKSPACE:
+                    currentWord = currentWord[:-1]
+                print currentWord, wordOnScreen
+
+        if size == "L":
+            bgImageSrc = "rsrc/large/title_BG.png"
+
+        bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+
+        if newWord:
+            wordOnScreen = wordList[score]
+            wordList.remove(wordOnScreen)
+            newWord = False
+
+        # Load Letters
+        letterDict = {} # A->Z->a->z filled
+        if size == "L":
+            for letterFile in os.listdir("rsrc/large/alphabet"):
+                if letterFile == "asterisk.png":
+                    asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+                elif letterFile[0] != "." and letterFile[-3:] != ".py":
+                    newLetterPath = "rsrc/large/alphabet/" + letterFile
+                    newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                    letterDict[letterFile[2]] = newLetterImage
+        elif size == "M":
+            for letterFile in os.listdir("rsrc/medium/alphabet"):
+                if letterFile[0] != "." and letterFile[-3:] != ".py":
+                    newLetterPath = "rsrc/medium/alphabet/" + letterFile
+                    newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                    letterDict[letterFile[2]] = newLetterImage
+
+        screen.blit(bgImage, ORIGIN)
+
+        totalWidth = 0
+        for e, letter in enumerate(wordOnScreen):
+            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+        
+        if currentWord == wordOnScreen:
+            newWord = True
+            currentWord = ""
+            score += 1
+
+        pygame.display.update()
+
+def readFileIntoArray(fileName):
+    f = open(fileName)
+    array = [line for line in f]
+    f.close()
+    return array
+
+def sattoloShuffle(array):
+    i = len(array)
+    while i > 1:
+        i -= 1
+        j = random.randint(0, i)
+        array[j], array[i] = array[i], array[j]
+    return array
