@@ -481,7 +481,6 @@ def displayHelpScreen(screen, size):
         helpTxtSrc = "rsrc/large/help_Text.png"
         helpBodySrc = "rsrc/large/help_Body.png"
         helpDoneSrc = "rsrc/large/help_Done.png"
-    ## Images below are not available atm
     elif size == "M":
         bgImageSrc = "rsrc/medium/title_BG.png"
         helpTxtSrc = "rsrc/medium/help_Text.png"
