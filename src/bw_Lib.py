@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 25th July 2013
+## Last Revision: 26th July 2013
 
 import os
 import sys
@@ -503,7 +503,10 @@ def displayHelpScreen(screen, size):
     helpDoneImg = pygame.image.load(helpDoneSrc).convert_alpha()
 
     # Create Buttons
-    doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
+    if size == "L":
+        doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
+    elif size == "M":
+        doneBtn = Button(helpDoneImg, MED_HELP_DONE_POS)
 
     # Handle Actions
     mousePos = pygame.mouse.get_pos()
