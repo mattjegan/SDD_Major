@@ -599,9 +599,16 @@ def playScrollingTextGame(screen, size):
 
         screen.blit(bgImage, ORIGIN)
 
+        # Display current word to type
         totalWidth = 0
         for e, letter in enumerate(wordOnScreen):
             screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+        
+        # Display current typing progress of word
+        totalWidth = 0
+        for e, letter in enumerate(currentWord):
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
         
         if currentWord == wordOnScreen:
