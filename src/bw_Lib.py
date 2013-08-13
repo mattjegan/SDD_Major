@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 26th July 2013
+## Last Revision: 13th August 2013
 
 import os
 import sys
@@ -652,7 +652,6 @@ class Avatar:
         self.armor = 1
 
 def openStoreScreen(screen, size, score):
-    pass
     running = True
     points = score
     avatar = Avatar(1, 1, 1)
@@ -665,6 +664,18 @@ def openStoreScreen(screen, size, score):
                 sys.exit()
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
+                
+        screen.blit(bgImage, ORIGIN)
+                
+        if size == "L":
+            # All elements
+        elif size == "M":
+            # All elements
+        elif size == "S":
+            # All elements        
+                
+        pygame.display.update()
+    return avatar
 
 def playBattleScene(avatar):
     pass
