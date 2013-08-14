@@ -691,4 +691,55 @@ def playBattleScene(avatar):
 
 def submitScore(user, score):
     pass
-    
+
+def displayHighScores(screen, size):
+    mouseDown = False
+    # Event Loop
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            mouseDown = True
+
+    if size == "L":
+        bgImageSrc = "rsrc/large/title_BG.png"
+        highScoreTxtSrc = "rsrc/large/title_leaderboards.png"
+        doneBtnSrc = "rsrc/large/help_Done.png"
+    elif size == "M":
+        bgImageSrc = "rsrc/medium/title_BG.png"
+    elif size == "S":
+        bgImageSrc = "rsrc/small/title_BG.png"
+
+    # Load Images
+    bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+    highScoreImg = pygame.image.load(highScoreTxtSrc).convert_alpha()
+    doneBtnImg = pygame.image.load(doneBtnSrc).convert_alpha()
+
+    # Create Buttons
+    if size == "L":
+        doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
+    elif size == "M":
+        doneBtn = Button(doneBtnImg, MED_HELP_DONE_POS)
+
+    # Handle Actions
+    mousePos = pygame.mouse.get_pos()
+    if mouseDown:
+        if doneBtn.checkTouch(mousePos): screenToGo = TITLE
+        else: screenToGo = HIGHSCORES
+    else: screenToGo = HIGHSCORES
+
+    # Render
+    screen.blit(bgImage, ORIGIN)
+
+    if size == "L":
+        screen.blit(highScoreImg, LRG_HELP_TITLE_POS)
+        screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
+    elif size == "M":
+        screen.blit(highScoreImg, MED_HELP_TITLE_POS)
+        screen.blit(doneBtnImg, MED_HELP_DONE_POS)
+    elif size == "S":
+        screen.blit(highScoreImg, SML_HELP_TITLE_POS)
+        screen.blit(doneBtnImg, SML_HELP_DONE_POS)
+
+    return screenToGo

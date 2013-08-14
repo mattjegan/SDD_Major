@@ -55,9 +55,7 @@ def main():
         if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
         elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass = displayLoginScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
-        elif currentScreen == HIGHSCORES: 
-            print HIGHSCORES
-            break
+        elif currentScreen == HIGHSCORES: currentScreen = displayHighScores(screen, size)
         elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
         elif currentScreen == GAME: playGame(screen, size)
         elif currentScreen == EXITGAME: running = False
