@@ -689,8 +689,12 @@ def openStoreScreen(screen, size, score):
 def playBattleScene(avatar):
     pass
 
-def submitScore(user, score):
-    pass
+def submitScore(user, score, fileName):
+    scoreFile = open(fileName, "r+a")
+    # Get current date from OS
+    # Scores stored in format (user; score; date)
+    scoreFile.write(user, score, date)
+    scoreFile.close()
 
 def displayHighScores(screen, size):
     mouseDown = False
