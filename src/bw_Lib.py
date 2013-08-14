@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 13th August 2013
+## Last Revision: 14th August 2013
 
 import os
 import sys
@@ -535,7 +535,7 @@ def displayHelpScreen(screen, size):
 
 def playGame(screen, size):
     score = playScrollingTextGame(screen, size)
-    avatar = openStoreScreen(score)
+    avatar = openStoreScreen(screen, size, score)
     playBattleScene(avatar)
     submitScore(user, score)
     screenToGo = TITLE
@@ -665,13 +665,22 @@ def openStoreScreen(screen, size, score):
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
                 
+        if size == "L":
+            bgImageSrc = "rsrc/large/title_BG.png"
+        elif size == "M":
+            bgImageSrc = "rsrc/medium/title_BG.png"
+        elif size == "S":
+            BgImageSrc = "rsrc/small/title_BG.png"
+
+        bgImage = pygame.image.load(bgImageSrc).convert_alpha()        
+                
         screen.blit(bgImage, ORIGIN)
                 
-        if size == "L":
+        #if size == "L":
             # All elements
-        elif size == "M":
+        #elif size == "M":
             # All elements
-        elif size == "S":
+        #elif size == "S":
             # All elements        
                 
         pygame.display.update()
