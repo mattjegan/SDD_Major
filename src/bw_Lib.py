@@ -646,12 +646,13 @@ def writeText(screen, text, location):
     screen.blit(obj, location)
 
 class Avatar:
-    def __init__(self, strength, magic, armor):
-        self.strength = 1
-        self.magic = 1
+    def __init__(self, attack, armor, magic):
+        self.attack = 1
         self.armor = 1
-
+        self.magic = 1
+        
 def openStoreScreen(screen, size, score):
+    mouseDown = False
     running = True
     points = score
     avatar = Avatar(1, 1, 1)
@@ -667,17 +668,102 @@ def openStoreScreen(screen, size, score):
                 
         if size == "L":
             bgImageSrc = "rsrc/large/title_BG.png"
+            storeTextSrc = "rsrc/large/sText.png"
+            attackSrc = "rsrc/large/attack.png"
+            armorSrc = "rsrc/large/armor.png"
+            magicSrc = "rsrc/large/magic.png"
+            pointsLeftSrc = "rsrc/large/pointsLeft.png"
+            storeBodySrc = "rsrc/large/sBody.png"
+            storePlusSrc = "rsrc/large/plusBox.png"
+            doneSrc = "rsrc/large/help_Done.png"
         elif size == "M":
             bgImageSrc = "rsrc/medium/title_BG.png"
         elif size == "S":
             BgImageSrc = "rsrc/small/title_BG.png"
 
-        bgImage = pygame.image.load(bgImageSrc).convert_alpha()        
+        doneImg = pygame.image.load(doneSrc).convert_alpha()
+
+        bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+        storeText = pygame.image.load(storeTextSrc).convert_alpha()
+        attackImg = pygame.image.load(attackSrc).convert_alpha()
+        armorImg = pygame.image.load(armorSrc).convert_alpha()
+        magicImg = pygame.image.load(magicSrc).convert_alpha()
+        pointsLeftImg = pygame.image.load(pointsLeftSrc).convert_alpha()
+        storeBodyImg = pygame.image.load(storeBodySrc).convert_alpha()
+        storePlusImg = pygame.image.load(storePlusSrc).convert_alpha()       
                 
+        # Load Numbers
+        numberDict = {} # A->Z->a->z filled
+        if size == "L":
+            for numberFile in os.listdir("rsrc/large/numbers"):
+                if numberFile[0] != "y":
+                    newNumberPath = "rsrc/large/numbers/" + numberFile
+                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                    numberDict[numberFile[1]] = newNumberImage
+
+        # Create Buttons
+        if size == "L":
+            doneBtn = Button(doneImg, LRG_STORE_DONE_POS)
+            attBtn = Button(storePlusImg, LRG_ATK_PLS_POS)
+            arrBtn = Button(storePlusImg, LRG_ARR_PLS_POS)
+            magBtn = Button(storePlusImg, LRG_MAG_PLS_POS)
+        elif size == "M":
+            doneBtn = Button(doneImg, MED_HELP_DONE_POS)
+
+        # Handle Actions
+        mousePos = pygame.mouse.get_pos()
+        if mouseDown:
+            if doneBtn.checkTouch(mousePos): running = False
+            else:
+                if attBtn.checkTouch(mousePos):
+                    avatar.attack += 1
+                elif arrBtn.checkTouch(mousePos): 
+                    avatar.armor += 1
+                elif magBtn.checkTouch(mousePos): 
+                    avatar.magic += 1
+                score -= 1
+            mouseDown = False
+
+        print avatar.attack, avatar.armor, avatar.magic , score
+
         screen.blit(bgImage, ORIGIN)
                 
-        #if size == "L":
-            # All elements
+        if size == "L":
+            screen.blit(storeText, LRG_HELP_TITLE_POS)
+            screen.blit(storeBodyImg, LRG_STORE_BODY_POS)
+            screen.blit(attackImg, LRG_STORE_ATK_POS)
+            screen.blit(armorImg, LRG_STORE_ARR_POS)
+            screen.blit(magicImg, LRG_STORE_MAG_POS)
+            screen.blit(pointsLeftImg, LRG_PTNSLFT_POS)
+            screen.blit(storePlusImg, LRG_ATK_PLS_POS)
+            screen.blit(storePlusImg, LRG_ARR_PLS_POS)
+            screen.blit(storePlusImg, LRG_MAG_PLS_POS)
+            screen.blit(doneImg, LRG_STORE_DONE_POS)
+
+            # Display points left
+            totalWidth = 0
+            for e, number in enumerate(str(score)):
+                screen.blit(numberDict[number], (LRG_PTNSLFT_POS[0]+100 + totalWidth, LRG_PTNSLFT_POS[1]+100 - numberDict[number].get_height()))
+                totalWidth += numberDict[number].get_width()
+
+            # Display attack
+            totalWidth = 0
+            for e, number in enumerate(str(avatar.attack)):
+                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ATK_PLS_POS[1]+10))
+                totalWidth += numberDict[number].get_width()
+
+            # Display armor
+            totalWidth = 0
+            for e, number in enumerate(str(avatar.armor)):
+                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ARR_PLS_POS[1]+10))
+                totalWidth += numberDict[number].get_width()
+
+            # Display magic
+            totalWidth = 0
+            for e, number in enumerate(str(avatar.magic)):
+                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_MAG_PLS_POS[1]+10))
+                totalWidth += numberDict[number].get_width()
+
         #elif size == "M":
             # All elements
         #elif size == "S":

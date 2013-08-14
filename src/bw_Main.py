@@ -52,6 +52,7 @@ def main():
     while running:
         if pygame.mixer.music.get_busy() != True:
             pygame.mixer.music.play()
+        openStoreScreen(screen, "L", 30)
         if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
         elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass = displayLoginScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
