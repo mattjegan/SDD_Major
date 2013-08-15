@@ -651,9 +651,7 @@ def playScrollingTextGame(screen, size):
         if currentWord == wordOnScreen:
             newWord = True
             currentWord = ""
-            score += 1
-
-        
+            score += 1     
 
         pygame.display.update()
     return score
@@ -746,18 +744,20 @@ def openStoreScreen(screen, size, score):
         # Handle Actions
         mousePos = pygame.mouse.get_pos()
         if mouseDown:
-            if doneBtn.checkTouch(mousePos): running = False
+            if doneBtn.checkTouch(mousePos): 
+                running = False
             else:
-                if attBtn.checkTouch(mousePos):
-                    avatar.attack += 1
-                elif arrBtn.checkTouch(mousePos): 
-                    avatar.armor += 1
-                elif magBtn.checkTouch(mousePos): 
-                    avatar.magic += 1
-                score -= 1
+                if score > 0:
+                    if attBtn.checkTouch(mousePos):
+                        avatar.attack += 1
+                    elif arrBtn.checkTouch(mousePos): 
+                        avatar.armor += 1
+                    elif magBtn.checkTouch(mousePos): 
+                        avatar.magic += 1
+                    score -= 1
             mouseDown = False
 
-        print avatar.attack, avatar.armor, avatar.magic , score
+        #print avatar.attack, avatar.armor, avatar.magic , score
 
         screen.blit(bgImage, ORIGIN)
                 
