@@ -550,6 +550,7 @@ def playGame(screen, size, user):
     score = playScrollingTextGame(screen, size)
     submitScore(user, score, "scores_alltime.txt")
     avatar = openStoreScreen(screen, size, score)
+    #avatar.displayStats()
     playBattleScene(avatar)
     screenToGo = TITLE
     return screenToGo
@@ -691,15 +692,17 @@ def writeText(screen, text, location):
 
 class Avatar:
     def __init__(self, attack, armor, magic):
-        self.attack = 1
-        self.armor = 1
-        self.magic = 1
+        self.attack = attack
+        self.armor = armor
+        self.magic = magic
+    def displayStats(self):
+        print self.attack, self.armor, self.magic
         
 def openStoreScreen(screen, size, score):
     mouseDown = False
     running = True
     points = score
-    avatar = Avatar(1, 1, 1)
+    avatar = Avatar(0, 0, 0)
 
     while running:
         # Event Loop
