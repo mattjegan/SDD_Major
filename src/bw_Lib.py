@@ -165,6 +165,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         field2Pos = LRG_LOGIN_FIELD2_POS
         confirmPos = LRG_LOGIN_CONFIRM_POS
         exitPos = LRG_LOGIN_EXIT_POS
+        tickBoxPos = LRG_TICKBOX
     elif size == "M":
         bgImageSrc = "rsrc/medium/title_BG.png"
         loginTextSrc = "rsrc/medium/login_Text.png"
@@ -214,7 +215,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     field2Btn = Button(fieldImg, field2Pos)
     confirmBtn = Button(confirmImg, confirmPos)
     exitBtn = Button(exitImg, exitPos)
-    tickBoxBtn = Button(tickBoxImg, LRG_TICKBOX)
+    tickBoxBtn = Button(tickBoxImg, tickBoxPos)
 
     mousePos = pygame.mouse.get_pos()
 
@@ -239,7 +240,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
             else:
                 hide = False
         else: onUserField = False; onPassField = False; screenToGo = LOGIN
-    print hide
+    #print hide
 
     # Blit
     screen.blit(bgImage, ORIGIN)
@@ -251,6 +252,9 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
         screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
         screen.blit(tickBoxImg, LRG_TICKBOX)
+
+        if hide == True:
+        	screen.blit(asteriskImage, LRG_CHK_AST)
 
         totalWidth = 0
         for e, letter in enumerate(username):
