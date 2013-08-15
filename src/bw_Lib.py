@@ -580,9 +580,9 @@ def playScrollingTextGame(screen, size):
             wordList.remove(wordOnScreen)
             newWord = False
 
-        # Load Letters
-        letterDict = {} # A->Z->a->z filled
         if size == "L":
+            # Load Letters
+            letterDict = {} # A->Z->a->z filled
             for letterFile in os.listdir("rsrc/large/alphabet"):
                 if letterFile == "asterisk.png":
                     asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
@@ -590,6 +590,14 @@ def playScrollingTextGame(screen, size):
                     newLetterPath = "rsrc/large/alphabet/" + letterFile
                     newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                     letterDict[letterFile[2]] = newLetterImage
+            
+            # Load Numbers
+            numberDict = {} # 1->9->0 filled
+            for numberFile in os.listdir("rsrc/large/numbers"):
+                if numberFile[0] != "y": # b: yellow; y: blue
+                    newNumberPath = "rsrc/large/numbers/" + numberFile
+                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                    numberDict[numberFile[1]] = newNumberImage
             
             barSrc = "rsrc/large/game_Bar.png"
             fieldSrc = "rsrc/large/game_Field.png"
@@ -610,12 +618,18 @@ def playScrollingTextGame(screen, size):
         
         screen.blit(bgImage, ORIGIN)
 
+        currentTime = time.time()
+        elapsedTime = currentTime - startTime
+        writeText(screen, str(elapsedTime), ORIGIN)
+        if elapsedTime >= 30:
+            running = False
+
         if size == "L":
             screen.blit(barImg, LRG_GAME_BAR)
             screen.blit(fieldImg, LRG_GAME_FIELD)
             screen.blit(typewordImg, LRG_GAME_TYPE)
-            screen.blit(clockImg, ORIGIN)
-                   
+            screen.blit(clockImg, LRG_GAME_CLOCK)
+                              
             # Display current word to type
             totalWidth = 0
             for e, letter in enumerate(wordOnScreen):
@@ -627,17 +641,19 @@ def playScrollingTextGame(screen, size):
             for e, letter in enumerate(currentWord):
                 screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + totalWidth, LRG_GAME_CRTWORD[1] - letterDict[letter].get_height()))
                 totalWidth += letterDict[letter].get_width()
+                
+            # Display score
+            totalWidth = 0
+            for e, number in enumerate(str(int(30-elapsedTime))):
+                screen.blit(numberDict[number], (LRG_GAME_CLOCK[0]+25 + totalWidth, LRG_GAME_CLOCK[1]+20+(94/2) - numberDict[number].get_height()))
+                totalWidth += numberDict[number].get_width()
         
         if currentWord == wordOnScreen:
             newWord = True
             currentWord = ""
             score += 1
 
-        currentTime = time.time()
-        elapsedTime = currentTime - startTime
-        writeText(screen, str(elapsedTime), ORIGIN)
-        if elapsedTime >= 30:
-            running = False
+        
 
         pygame.display.update()
     return score
