@@ -59,7 +59,7 @@ def main():
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == HIGHSCORES: currentScreen = displayHighScores(screen, size)
         elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
-        elif currentScreen == GAME: playGame(screen, size)
+        elif currentScreen == GAME: playGame(screen, size, username)
         elif currentScreen == EXITGAME: running = False
         pygame.display.update()
 

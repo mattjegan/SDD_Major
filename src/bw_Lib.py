@@ -6,6 +6,7 @@
 import os
 import sys
 import time
+import datetime
 import string
 import random
 import pygame
@@ -545,11 +546,11 @@ def displayHelpScreen(screen, size):
 
     return screenToGo
 
-def playGame(screen, size):
+def playGame(screen, size, user):
     score = playScrollingTextGame(screen, size)
+    submitScore(user, score, "scores_alltime.txt")
     avatar = openStoreScreen(screen, size, score)
     playBattleScene(avatar)
-    submitScore(user, score)
     screenToGo = TITLE
     return screenToGo
 
@@ -821,10 +822,14 @@ def playBattleScene(avatar):
     pass
 
 def submitScore(user, score, fileName):
-    scoreFile = open(fileName, "r+a")
+    scoreFile = open(fileName, "a")
+    
     # Get current date from OS
+    today = datetime.date.today()
+    date2rec = str(today.day) + ';' + str(today.month) + ';' + str(today.year) + ';\n'
+    
     # Scores stored in format (user; score; date)
-    scoreFile.write(user, score, date)
+    scoreFile.write(str(user) + ';' + str(score) + ';' + str(date2rec))
     scoreFile.close()
 
 def displayHighScores(screen, size):
