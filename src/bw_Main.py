@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 14th July 2013
+## Last Revision: 15th August 2013
 
 import os
 import sys
@@ -52,7 +52,7 @@ def main():
     while running:
         if pygame.mixer.music.get_busy() != True:
             pygame.mixer.music.play()
-        openStoreScreen(screen, "L", 30)
+        #openStoreScreen(screen, "L", 30)
         if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
         elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass = displayLoginScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)

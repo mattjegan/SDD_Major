@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 14th August 2013
+## Last Revision: 15th August 2013
 
 import os
 import sys
@@ -590,6 +590,12 @@ def playScrollingTextGame(screen, size):
                     newLetterPath = "rsrc/large/alphabet/" + letterFile
                     newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                     letterDict[letterFile[2]] = newLetterImage
+            
+            barSrc = "rsrc/large/game_Bar.png"
+            fieldSrc = "rsrc/large/game_Field.png"
+            typewordSrc = "rsrc/large/game_TypeWord.png"
+            clockSrc = "rsrc/large/game_Clock.png"
+            
         elif size == "M":
             for letterFile in os.listdir("rsrc/medium/alphabet"):
                 if letterFile[0] != "." and letterFile[-3:] != ".py":
@@ -597,19 +603,30 @@ def playScrollingTextGame(screen, size):
                     newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                     letterDict[letterFile[2]] = newLetterImage
 
+        barImg = pygame.image.load(barSrc).convert_alpha()
+        fieldImg = pygame.image.load(fieldSrc).convert_alpha()
+        typewordImg = pygame.image.load(typewordSrc).convert_alpha()
+        clockImg = pygame.image.load(clockSrc).convert_alpha()
+        
         screen.blit(bgImage, ORIGIN)
 
-        # Display current word to type
-        totalWidth = 0
-        for e, letter in enumerate(wordOnScreen):
-            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
+        if size == "L":
+            screen.blit(barImg, LRG_GAME_BAR)
+            screen.blit(fieldImg, LRG_GAME_FIELD)
+            screen.blit(typewordImg, LRG_GAME_TYPE)
+            screen.blit(clockImg, ORIGIN)
+                   
+            # Display current word to type
+            totalWidth = 0
+            for e, letter in enumerate(wordOnScreen):
+                screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+                totalWidth += letterDict[letter].get_width()
         
-        # Display current typing progress of word
-        totalWidth = 0
-        for e, letter in enumerate(currentWord):
-            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
+            # Display current typing progress of word
+            totalWidth = 0
+            for e, letter in enumerate(currentWord):
+                screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + totalWidth, LRG_GAME_CRTWORD[1] - letterDict[letter].get_height()))
+                totalWidth += letterDict[letter].get_width()
         
         if currentWord == wordOnScreen:
             newWord = True
