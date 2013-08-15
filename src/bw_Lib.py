@@ -123,9 +123,8 @@ def displayTitleScreen(screen, size):
 
     return screenToGo
 
-def displayLoginScreen(screen, size, username, password, onUserField, onPassField):
+def displayLoginScreen(screen, size, username, password, onUserField, onPassField, hide):
     mouseDown = False
-    hide = True
     # Event Loop
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -161,6 +160,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         fieldSrc = "rsrc/large/login_Field.png"
         confirmSrc = "rsrc/large/login_Confirm.png"
         exitSrc = "rsrc/large/title_Exit.png"
+        tickBoxSrc = "rsrc/large/tickBox.png"
         field1Pos = LRG_LOGIN_FIELD1_POS
         field2Pos = LRG_LOGIN_FIELD2_POS
         confirmPos = LRG_LOGIN_CONFIRM_POS
@@ -188,6 +188,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     fieldImg = pygame.image.load(fieldSrc).convert_alpha()
     confirmImg = pygame.image.load(confirmSrc).convert_alpha()
     exitImg = pygame.image.load(exitSrc).convert_alpha()
+    tickBoxImg = pygame.image.load(tickBoxSrc).convert_alpha()
 
     # Load Letters
     letterDict = {} # A->Z->a->z filled
@@ -213,6 +214,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     field2Btn = Button(fieldImg, field2Pos)
     confirmBtn = Button(confirmImg, confirmPos)
     exitBtn = Button(exitImg, exitPos)
+    tickBoxBtn = Button(tickBoxImg, LRG_TICKBOX)
 
     mousePos = pygame.mouse.get_pos()
 
@@ -224,15 +226,20 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         elif confirmBtn.checkTouch(mousePos): 
             onUserField = False
             onPassField = False
-            print "Pressed Confirm"
-            print checkLogin(username, password), "username/password"
+            #print "Pressed Confirm"
+            #print checkLogin(username, password), "username/password"
             if checkLogin(username, password):
                 screenToGo = GAME
             else:
                 screenToGo = TITLE
         elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
+        elif tickBoxBtn.checkTouch(mousePos): 
+            if hide == False:
+                hide = True
+            else:
+                hide = False
         else: onUserField = False; onPassField = False; screenToGo = LOGIN
-    
+    print hide
 
     # Blit
     screen.blit(bgImage, ORIGIN)
@@ -243,6 +250,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
         screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
         screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
+        screen.blit(tickBoxImg, LRG_TICKBOX)
 
         totalWidth = 0
         for e, letter in enumerate(username):
@@ -284,7 +292,7 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
         screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
         screen.blit(exitImg, MED_LOGIN_EXIT_POS)
 
-    return screenToGo, username, password, onUserField, onPassField
+    return screenToGo, username, password, onUserField, onPassField, hide
 
 def checkLogin(username, password):
     userFile = open("userFile.txt", "rU")
@@ -400,7 +408,7 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
             onUserField = False
             onPassField = False
             isValid = checkValidUser(username, password)
-            print "isValid", isValid
+            #print "isValid", isValid
             ## 0 = Invalid password, 1 = Valid, 2 = Invalid username
             if isValid == True: storeNewUser(username, password); screenToGo = GAME
             elif isValid == False: pass
@@ -568,7 +576,7 @@ def playScrollingTextGame(screen, size):
                         currentWord += str(pygame.key.name(event.key))
                 elif event.key == K_BACKSPACE:
                     currentWord = currentWord[:-1]
-                print currentWord, wordOnScreen
+                #print currentWord, wordOnScreen
 
         if size == "L":
             bgImageSrc = "rsrc/large/title_BG.png"
@@ -620,7 +628,7 @@ def playScrollingTextGame(screen, size):
 
         currentTime = time.time()
         elapsedTime = currentTime - startTime
-        writeText(screen, str(elapsedTime), ORIGIN)
+        #writeText(screen, str(elapsedTime), ORIGIN)
         if elapsedTime >= 30:
             running = False
 
