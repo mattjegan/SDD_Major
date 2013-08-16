@@ -829,11 +829,16 @@ def submitScore(user, score, fileName):
     
     # Get current date from OS
     today = datetime.date.today()
-    date2rec = str(today.day) + ';' + str(today.month) + ';' + str(today.year) + ';\n'
+    date2rec = str(datetime.date.toordinal(today)) + ';\n'
     
     # Scores stored in format (user; score; date)
     scoreFile.write(str(user) + ';' + str(score) + ';' + str(date2rec))
     scoreFile.close()
+
+def sortAllTimeScores(filename):
+    arrayOfScores = readFileIntoArray(filename)
+    for element in arrayOfScores:
+        pass
 
 def displayHighScores(screen, size):
     mouseDown = False
