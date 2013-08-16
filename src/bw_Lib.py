@@ -837,8 +837,16 @@ def submitScore(user, score, fileName):
 
 def sortAllTimeScores(filename):
     arrayOfScores = readFileIntoArray(filename)
-    for element in arrayOfScores:
-        pass
+    for e, element in enumerate(arrayOfScores):
+        # Split element into attributes - (UserWarning;score;timeAsOrdinal)
+        arrayOfScores[e] = element.split(';')[:3]
+    
+    # Sort by score - decending
+    arrayOfScore.sort(key=lambda x: x[1])
+    arrayOfScores.reverse()
+    
+    # Overwrite file
+    pass
 
 def displayHighScores(screen, size):
     mouseDown = False
