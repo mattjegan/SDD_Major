@@ -860,15 +860,51 @@ def sortAllTimeScores(filename):
     #fileToWrite.write('\n')
     fileToWrite.close()
 
+def sortDailyScores(allScores, dailyScores):
+    arrayOfScores = readFileIntoArray(allScores)
+    for e, element in enumerate(arrayOfScores):
+        # Split element into attributes - (UserWarning;score;timeAsOrdinal)
+        arrayOfScores[e] = element.split(';')[:3]
+
+    today = datetime.date.today()
+    arrayOfIndexs = []
+    for e, element in enumerate(arrayOfScores):
+        if element[2] != str(datetime.date.toordinal(today)):
+            arrayOfIndexs.append(e)
+
+    arrayOfIndexs.reverse()
+    for i in arrayOfIndexs:
+        print i
+        del arrayOfScores[i]
+
+    # Sort by score - decending
+    arrayOfScores.sort(key=lambda x: int(x[1]))
+    arrayOfScores.reverse()
+
+    # Re-join all attributes into single element - 1D array of strings
+    for e, element in enumerate(arrayOfScores):
+        arrayOfScores[e] = ';'.join(element)
+        arrayOfScores[e] = arrayOfScores[e] + ';\n'
+
+    # Overwrite file
+    fileToWrite = open(dailyScores, "w+a")
+    for element in arrayOfScores:
+        fileToWrite.write(element)
+    #fileToWrite.write('\n')
+    fileToWrite.close()
+
 def parseScores(filename):
     arrayOfScores = readFileIntoArray(filename)
 
     fileToWrite = open(filename, "w+a")
     for e, element in enumerate(arrayOfScores):
-        if e < 3:
-            fileToWrite.write(element)
+        if len(arrayOfScores) > 3:
+            if e < 3:
+                fileToWrite.write(element)
+            else:
+                break
         else:
-            break
+            fileToWrite.write(element)
     fileToWrite.close()
 
 
@@ -955,16 +991,23 @@ def displayHighScores(screen, size):
 
             # Display Daily Scores
             # Display All Time Scores
-            #parseScores("scores_alltime.txt")
-            #arrayOfScores = readFileIntoArray("scores_alltime.txt")
-            #for e, element in enumerate(arrayOfScores):
-            #    arrayOfScores[e] = element.split(';')
+            a = readFileIntoArray("scores_daily.txt")
+            parseScores("scores_daily.txt")
+            arrayOfScores = readFileIntoArray("scores_daily.txt")
+            for e, element in enumerate(arrayOfScores):
+                arrayOfScores[e] = element.split(';')
 
                 # Display score
-                #totalWidth = 0
-                #for number in arrayOfScores[e][1]:
-                #    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
-                #    totalWidth += numberDict[number].get_width()
+                totalWidth = 0
+                for number in arrayOfScores[e][1]:
+                    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                    totalWidth += numberDict[number].get_width()
+
+                # Display Username
+                totalWidth = 0
+                for letter in arrayOfScores[e][0]:
+                    screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230-470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                    totalWidth += letterDict[letter].get_width()
 
             screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
             screen.blit(userImg, LRG_LEADER_AUSER)

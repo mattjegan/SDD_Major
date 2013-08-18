@@ -59,6 +59,7 @@ def main():
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
         elif currentScreen == HIGHSCORES: 
             sortAllTimeScores("scores_alltime.txt")
+            sortDailyScores("scores_alltime.txt", "scores_daily.txt")
             currentScreen = displayHighScores(screen, size)
         elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
         elif currentScreen == GAME: currentScreen = playGame(screen, size, username)
