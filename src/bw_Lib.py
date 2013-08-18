@@ -860,76 +860,142 @@ def sortAllTimeScores(filename):
     #fileToWrite.write('\n')
     fileToWrite.close()
 
+def parseScores(filename):
+    arrayOfScores = readFileIntoArray(filename)
+
+    fileToWrite = open(filename, "w+a")
+    for e, element in enumerate(arrayOfScores):
+        if e < 3:
+            fileToWrite.write(element)
+        else:
+            break
+    fileToWrite.close()
+
 
 def displayHighScores(screen, size):
-    pass
     mouseDown = False
-    # Event Loop
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == MOUSEBUTTONDOWN:
-            mouseDown = True
+    running = True
+    while running:
+        # Event Loop
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                mouseDown = True
 
-    if size == "L":
-        bgImageSrc = "rsrc/large/title_BG.png"
-        highScoreTxtSrc = "rsrc/large/leader_Text.png"
-        dailySrc = "rsrc/large/leader_Daily.png"
-        allTimeSrc = "rsrc/large/leader_AllTime.png"
-        userSrc = "rsrc/large/leader_Username.png"
-        scoreSrc = "rsrc/large/leader_Score.png"
-        barSrc = "rsrc/large/leader_Bar.png"
-        doneBtnSrc = "rsrc/large/help_Done.png"
-    elif size == "M":
-        bgImageSrc = "rsrc/medium/title_BG.png"
-    elif size == "S":
-        bgImageSrc = "rsrc/small/title_BG.png"
+        if size == "L":
+            bgImageSrc = "rsrc/large/title_BG.png"
+            highScoreTxtSrc = "rsrc/large/leader_Text.png"
+            dailySrc = "rsrc/large/leader_Daily.png"
+            allTimeSrc = "rsrc/large/leader_AllTime.png"
+            userSrc = "rsrc/large/leader_Username.png"
+            scoreSrc = "rsrc/large/leader_Score.png"
+            barSrc = "rsrc/large/leader_Bar.png"
+            doneBtnSrc = "rsrc/large/help_Done.png"
+        elif size == "M":
+            bgImageSrc = "rsrc/medium/title_BG.png"
+        elif size == "S":
+            bgImageSrc = "rsrc/small/title_BG.png"
 
-    # Load Images
-    bgImage = pygame.image.load(bgImageSrc).convert_alpha()
-    highScoreImg = pygame.image.load(highScoreTxtSrc).convert_alpha()
-    dailyImg = pygame.image.load(dailySrc).convert_alpha()
-    allTimeImg = pygame.image.load(allTimeSrc).convert_alpha()
-    userImg = pygame.image.load(userSrc).convert_alpha()
-    scoreImg = pygame.image.load(scoreSrc).convert_alpha()
-    barImg = pygame.image.load(barSrc).convert_alpha()
-    doneBtnImg = pygame.image.load(doneBtnSrc).convert_alpha()
+        # Load Images
+        bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+        highScoreImg = pygame.image.load(highScoreTxtSrc).convert_alpha()
+        dailyImg = pygame.image.load(dailySrc).convert_alpha()
+        allTimeImg = pygame.image.load(allTimeSrc).convert_alpha()
+        userImg = pygame.image.load(userSrc).convert_alpha()
+        scoreImg = pygame.image.load(scoreSrc).convert_alpha()
+        barImg = pygame.image.load(barSrc).convert_alpha()
+        doneBtnImg = pygame.image.load(doneBtnSrc).convert_alpha()
 
-    # Create Buttons
-    if size == "L":
-        doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
-    elif size == "M":
-        doneBtn = Button(doneBtnImg, MED_HELP_DONE_POS)
+        # Load Numbers
+        numberDict = {} # A->Z->a->z filled
+        if size == "L":
+            for numberFile in os.listdir("rsrc/large/numbers"):
+                if numberFile[0] != "b": # Yellow Numbers
+                    newNumberPath = "rsrc/large/numbers/" + numberFile
+                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                    numberDict[numberFile[1]] = newNumberImage
 
-    # Handle Actions
-    mousePos = pygame.mouse.get_pos()
-    if mouseDown:
-        if doneBtn.checkTouch(mousePos): screenToGo = TITLE
-        else: screenToGo = HIGHSCORES
-    else: screenToGo = HIGHSCORES
+        # Load Letters
+        letterDict = {} # A->Z->a->z filled
+        for letterFile in os.listdir("rsrc/large/alphabet"):
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/large/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
 
-    # Render
-    screen.blit(bgImage, ORIGIN)
+        # Create Buttons
+        if size == "L":
+            doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
+        elif size == "M":
+            doneBtn = Button(doneBtnImg, MED_HELP_DONE_POS)
 
-    if size == "L":
-        screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
-        screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
-        
-        screen.blit(dailyImg, LRG_LEADER_DAILY)
-        screen.blit(userImg, LRG_LEADER_DUSER)
-        screen.blit(scoreImg, LRG_LEADER_DSCORE)
-        screen.blit(barImg, LRG_LEADER_DBAR)
+        # Handle Actions
+        mousePos = pygame.mouse.get_pos()
+        if mouseDown:
+            if doneBtn.checkTouch(mousePos): 
+                screenToGo = TITLE
+                running = False
+            mouseDown = False
 
-        screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
-        screen.blit(userImg, LRG_LEADER_AUSER)
-        screen.blit(scoreImg, LRG_LEADER_ASCORE)
-        screen.blit(barImg, LRG_LEADER_ABAR)
-    elif size == "M":
-        screen.blit(highScoreImg, MED_HELP_TITLE_POS)
-        screen.blit(doneBtnImg, MED_HELP_DONE_POS)
-    elif size == "S":
-        screen.blit(highScoreImg, SML_HELP_TITLE_POS)
-        screen.blit(doneBtnImg, SML_HELP_DONE_POS)
+        # Render
+        screen.blit(bgImage, ORIGIN)
+
+        if size == "L":
+            screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
+            screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
+            
+            screen.blit(dailyImg, LRG_LEADER_DAILY)
+            screen.blit(userImg, LRG_LEADER_DUSER)
+            screen.blit(scoreImg, LRG_LEADER_DSCORE)
+            screen.blit(barImg, LRG_LEADER_DBAR)
+
+            # Display Daily Scores
+            # Display All Time Scores
+            #parseScores("scores_alltime.txt")
+            #arrayOfScores = readFileIntoArray("scores_alltime.txt")
+            #for e, element in enumerate(arrayOfScores):
+            #    arrayOfScores[e] = element.split(';')
+
+                # Display score
+                #totalWidth = 0
+                #for number in arrayOfScores[e][1]:
+                #    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                #    totalWidth += numberDict[number].get_width()
+
+            screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
+            screen.blit(userImg, LRG_LEADER_AUSER)
+            screen.blit(scoreImg, LRG_LEADER_ASCORE)
+            screen.blit(barImg, LRG_LEADER_ABAR)
+
+            # Display All Time Scores
+            parseScores("scores_alltime.txt")
+            arrayOfScores = readFileIntoArray("scores_alltime.txt")
+            for e, element in enumerate(arrayOfScores):
+                arrayOfScores[e] = element.split(';')
+
+                # Display Username
+                totalWidth = 0
+                for letter in arrayOfScores[e][0]:
+                    screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                    totalWidth += letterDict[letter].get_width()
+
+                # Display score
+                totalWidth = 0
+                for number in arrayOfScores[e][1]:
+                    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + 470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                    totalWidth += numberDict[number].get_width()
+
+        elif size == "M":
+            screen.blit(highScoreImg, MED_HELP_TITLE_POS)
+            screen.blit(doneBtnImg, MED_HELP_DONE_POS)
+        elif size == "S":
+            screen.blit(highScoreImg, SML_HELP_TITLE_POS)
+            screen.blit(doneBtnImg, SML_HELP_DONE_POS)
+
+        pygame.display.update()
 
     return screenToGo
