@@ -1,7 +1,7 @@
 ## bw_Cons.py
 ##
 ## Written by Matthew Egan
-## Last Revised: 15th August 2013
+## Last Revised: 18th August 2013
 
 WIDTH_THRESHOLD = 1280
 WIDTH_MEDIUM_THRESHOLD = 960

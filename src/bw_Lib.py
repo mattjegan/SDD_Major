@@ -551,7 +551,7 @@ def playGame(screen, size, user):
     submitScore(user, score, "scores_alltime.txt")
     avatar = openStoreScreen(screen, size, score)
     #avatar.displayStats()
-    playBattleScene(avatar)
+    playBattleScene(screen, avatar)
     screenToGo = TITLE
     return screenToGo
 
@@ -821,8 +821,48 @@ def openStoreScreen(screen, size, score):
         pygame.display.update()
     return avatar
 
-def playBattleScene(avatar):
-    pass
+def playBattleScene(screen, avatar):
+    startTime = time.time()
+    running = True
+    while running:
+
+        # Load Letters
+        letterDict = {} # A->Z->a->z filled
+        for letterFile in os.listdir("rsrc/large/alphabet"):
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/large/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
+
+        bgImageSrc = "rsrc/large/title_BG.png"
+        bgImage = pygame.image.load(bgImageSrc).convert_alpha()
+        screen.blit(bgImage, ORIGIN)
+
+        msg = "Congratulations"
+        totalWidth = 0
+        for letter in msg:
+            screen.blit(letterDict[letter], (LRG_LOGIN_POS[0] + totalWidth, (LRG_MAG_PLS_POS[1]-70)))
+            totalWidth += letterDict[letter].get_width()
+
+        if avatar.attack > avatar.armor and avatar.attack > avatar.magic: msg = "You are a warrior"
+        elif avatar.armor > avatar.attack and avatar.armor > avatar.magic: msg = "You are a shieldman"
+        elif avatar.magic > avatar.attack and avatar.magic > avatar.armor: msg = "You are a mage"
+        else: msg = "You are awesome"
+
+        totalWidth = 0
+        for letter in msg:
+            if letter != ' ':
+                screen.blit(letterDict[letter], (LRG_LOGIN_POS[0] + totalWidth, (LRG_MAG_PLS_POS[1]-70+70+70)))
+                totalWidth += letterDict[letter].get_width()
+            else:
+                totalWidth += 20
+
+        if time.time() - startTime >= 5:
+            running = False
+
+        pygame.display.update()
 
 def submitScore(user, score, fileName):
     scoreFile = open(fileName, "a")
