@@ -841,18 +841,23 @@ def sortAllTimeScores(filename):
         # Split element into attributes - (UserWarning;score;timeAsOrdinal)
         arrayOfScores[e] = element.split(';')[:3]
     
+    #for x in arrayOfScores:
+    #    print x
+
     # Sort by score - decending
-    arrayOfScores.sort(key=lambda x: x[1])
+    arrayOfScores.sort(key=lambda x: int(x[1]))
     arrayOfScores.reverse()
     
     # Re-join all attributes into single element - 1D array of strings
     for e, element in enumerate(arrayOfScores):
         arrayOfScores[e] = ';'.join(element)
+        arrayOfScores[e] = arrayOfScores[e] + ';\n'
 
     # Overwrite file
-    fileToWrite = open(filename, "w")
+    fileToWrite = open(filename, "w+a")
     for element in arrayOfScores:
-        fileToWrite.write(element + "\n")
+        fileToWrite.write(element)
+    #fileToWrite.write('\n')
     fileToWrite.close()
 
 
