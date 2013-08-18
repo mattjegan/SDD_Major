@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 15th August 2013
+## Last Revision: 18th August 2013
 
 import os
 import sys
@@ -842,13 +842,22 @@ def sortAllTimeScores(filename):
         arrayOfScores[e] = element.split(';')[:3]
     
     # Sort by score - decending
-    arrayOfScore.sort(key=lambda x: x[1])
+    arrayOfScores.sort(key=lambda x: x[1])
     arrayOfScores.reverse()
     
+    # Re-join all attributes into single element - 1D array of strings
+    for e, element in enumerate(arrayOfScores):
+        arrayOfScores[e] = ';'.join(element)
+
     # Overwrite file
-    pass
+    fileToWrite = open(filename, "w")
+    for element in arrayOfScores:
+        fileToWrite.write(element + "\n")
+    fileToWrite.close()
+
 
 def displayHighScores(screen, size):
+    pass
     mouseDown = False
     # Event Loop
     for event in pygame.event.get():

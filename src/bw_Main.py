@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 15th August 2013
+## Last Revision: 18th August 2013
 
 import os
 import sys
@@ -57,7 +57,9 @@ def main():
         if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
         elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass, hide = displayLoginScreen(screen, size, username, password, onUser, onPass, hide)
         elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
-        elif currentScreen == HIGHSCORES: currentScreen = displayHighScores(screen, size)
+        elif currentScreen == HIGHSCORES: 
+            sortAllTimeScores("scores_alltime.txt")
+            currentScreen = displayHighScores(screen, size)
         elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
         elif currentScreen == GAME: currentScreen = playGame(screen, size, username)
         elif currentScreen == EXITGAME: running = False
