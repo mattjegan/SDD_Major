@@ -874,7 +874,12 @@ def displayHighScores(screen, size):
 
     if size == "L":
         bgImageSrc = "rsrc/large/title_BG.png"
-        highScoreTxtSrc = "rsrc/large/title_leaderboards.png"
+        highScoreTxtSrc = "rsrc/large/leader_Text.png"
+        dailySrc = "rsrc/large/leader_Daily.png"
+        allTimeSrc = "rsrc/large/leader_AllTime.png"
+        userSrc = "rsrc/large/leader_Username.png"
+        scoreSrc = "rsrc/large/leader_Score.png"
+        barSrc = "rsrc/large/leader_Bar.png"
         doneBtnSrc = "rsrc/large/help_Done.png"
     elif size == "M":
         bgImageSrc = "rsrc/medium/title_BG.png"
@@ -884,6 +889,11 @@ def displayHighScores(screen, size):
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
     highScoreImg = pygame.image.load(highScoreTxtSrc).convert_alpha()
+    dailyImg = pygame.image.load(dailySrc).convert_alpha()
+    allTimeImg = pygame.image.load(allTimeSrc).convert_alpha()
+    userImg = pygame.image.load(userSrc).convert_alpha()
+    scoreImg = pygame.image.load(scoreSrc).convert_alpha()
+    barImg = pygame.image.load(barSrc).convert_alpha()
     doneBtnImg = pygame.image.load(doneBtnSrc).convert_alpha()
 
     # Create Buttons
@@ -903,8 +913,18 @@ def displayHighScores(screen, size):
     screen.blit(bgImage, ORIGIN)
 
     if size == "L":
-        screen.blit(highScoreImg, LRG_HELP_TITLE_POS)
+        screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
         screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
+        
+        screen.blit(dailyImg, LRG_LEADER_DAILY)
+        screen.blit(userImg, LRG_LEADER_DUSER)
+        screen.blit(scoreImg, LRG_LEADER_DSCORE)
+        screen.blit(barImg, LRG_LEADER_DBAR)
+
+        screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
+        screen.blit(userImg, LRG_LEADER_AUSER)
+        screen.blit(scoreImg, LRG_LEADER_ASCORE)
+        screen.blit(barImg, LRG_LEADER_ABAR)
     elif size == "M":
         screen.blit(highScoreImg, MED_HELP_TITLE_POS)
         screen.blit(doneBtnImg, MED_HELP_DONE_POS)
