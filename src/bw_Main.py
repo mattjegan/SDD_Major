@@ -1,7 +1,7 @@
 ## bw_Main.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 18th August 2013
+## Last Revision: 19th August 2013
 
 import os
 import sys
@@ -15,23 +15,11 @@ def main():
     pygame.init()
 
     dis = pygame.display.Info()
-    print dis.current_w
-    print dis.current_h
+    #print dis.current_w
+    #print dis.current_h
 
-    size = "S"
-
-    if dis.current_w > WIDTH_THRESHOLD:
-        screenWidth = WIDTH_LARGE
-        screenHeight = HEIGHT_LARGE
-        size = "L"
-    elif dis.current_w > WIDTH_MEDIUM_THRESHOLD and dis.current_w <= WIDTH_THRESHOLD:
-        screenWidth = WIDTH_MEDIUM
-        screenHeight = HEIGHT_MEDIUM
-        size = "M"
-    else: 
-        screenWidth = WIDTH_SMALL
-        screenHeight = HEIGHT_SMALL
-        size = "S"
+    screenWidth = WIDTH_LARGE
+    screenHeight = HEIGHT_LARGE
 
     screen = pygame.display.set_mode((screenWidth, screenHeight))
     if not pygame.font: print "Warning: Font disabled"
@@ -54,15 +42,15 @@ def main():
         if pygame.mixer.music.get_busy() != True:
             pygame.mixer.music.play()
         #openStoreScreen(screen, "L", 30)
-        if currentScreen == TITLE: currentScreen = displayTitleScreen(screen, size); username = ""; password = ""
-        elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass, hide = displayLoginScreen(screen, size, username, password, onUser, onPass, hide)
-        elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, size, username, password, onUser, onPass)
+        if currentScreen == TITLE: currentScreen = displayTitleScreen(screen); username = ""; password = ""
+        elif currentScreen == LOGIN: currentScreen, username, password, onUser, onPass, hide = displayLoginScreen(screen, username, password, onUser, onPass, hide)
+        elif currentScreen == NEWUSER: currentScreen, username,password, onUser, onPass = displayNewUserScreen(screen, username, password, onUser, onPass)
         elif currentScreen == HIGHSCORES: 
             sortAllTimeScores("scores_alltime.txt")
             sortDailyScores("scores_alltime.txt", "scores_daily.txt")
-            currentScreen = displayHighScores(screen, size)
-        elif currentScreen == HELP: currentScreen = displayHelpScreen(screen, size)
-        elif currentScreen == GAME: currentScreen = playGame(screen, size, username)
+            currentScreen = displayHighScores(screen)
+        elif currentScreen == HELP: currentScreen = displayHelpScreen(screen)
+        elif currentScreen == GAME: currentScreen = playGame(screen, username)
         elif currentScreen == EXITGAME: running = False
         pygame.display.update()
 

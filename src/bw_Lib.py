@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 18th August 2013
+## Last Revision: 19th August 2013
 
 import os
 import sys
@@ -35,7 +35,7 @@ class Button:
         else:
             return False
 
-def displayTitleScreen(screen, size):
+def displayTitleScreen(screen):
     mouseDown = False
     # Event Loop
     for event in pygame.event.get():
@@ -45,34 +45,18 @@ def displayTitleScreen(screen, size):
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
     
-    if size == "L": 
-        bgImageSrc = "rsrc/large/title_BG.png"
-        bwTextSrc = "rsrc/large/title_Text.png"
-        loginSrc = "rsrc/large/title_Login.png"
-        createSrc = "rsrc/large/title_CreateAcc.png"
-        leaderSrc = "rsrc/large/title_Leaderboards.png"
-        helpSrc = "rsrc/large/title_Help.png"
-        exitSrc = "rsrc/large/title_Exit.png"
-        loginPos = LRG_LOGIN_POS
-        createPos = LRG_CREATE_POS
-        leaderPos = LRG_LEADER_POS
-        helpPos = LRG_HELP_POS
-        exitPos = LRG_EXIT_POS
-    elif size == "M":
-        bgImageSrc = "rsrc/medium/title_BG.png"
-        bwTextSrc = "rsrc/medium/title_Text.png"
-        loginSrc = "rsrc/medium/title_Login.png"
-        createSrc = "rsrc/medium/title_CreateAcc.png"
-        leaderSrc = "rsrc/medium/title_Leaderboards.png"
-        helpSrc = "rsrc/medium/title_Help.png"
-        exitSrc = "rsrc/medium/title_Exit.png"
-        loginPos = MED_LOGIN_POS
-        createPos = MED_CREATE_POS
-        leaderPos = MED_LEADER_POS
-        helpPos = MED_HELP_POS
-        exitPos = MED_EXIT_POS
-    elif size == "S": 
-        bgImageSrc = "rsrc/smallBG.png"
+    bgImageSrc = "rsrc/large/title_BG.png"
+    bwTextSrc = "rsrc/large/title_Text.png"
+    loginSrc = "rsrc/large/title_Login.png"
+    createSrc = "rsrc/large/title_CreateAcc.png"
+    leaderSrc = "rsrc/large/title_Leaderboards.png"
+    helpSrc = "rsrc/large/title_Help.png"
+    exitSrc = "rsrc/large/title_Exit.png"
+    loginPos = LRG_LOGIN_POS
+    createPos = LRG_CREATE_POS
+    leaderPos = LRG_LEADER_POS
+    helpPos = LRG_HELP_POS
+    exitPos = LRG_EXIT_POS
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha() # Convert alpha since png is transparent
@@ -105,26 +89,16 @@ def displayTitleScreen(screen, size):
 
     screen.blit(bgImage, ORIGIN)
 
-    if size == "L":
-        screen.blit(bwText, LRG_TITLE_POS)
-        screen.blit(loginImg, LRG_LOGIN_POS)
-        screen.blit(createImg, LRG_CREATE_POS)
-        screen.blit(leaderImg, LRG_LEADER_POS)
-        screen.blit(helpImg, LRG_HELP_POS)
-        screen.blit(exitImg, LRG_EXIT_POS)
-    elif size == "M":
-        screen.blit(bwText, MED_TITLE_POS)
-        screen.blit(loginImg, MED_LOGIN_POS)
-        screen.blit(createImg, MED_CREATE_POS)
-        screen.blit(leaderImg, MED_LEADER_POS)
-        screen.blit(helpImg, MED_HELP_POS)
-        screen.blit(exitImg, MED_EXIT_POS)
-    elif size == "S":
-        pass
+    screen.blit(bwText, LRG_TITLE_POS)
+    screen.blit(loginImg, LRG_LOGIN_POS)
+    screen.blit(createImg, LRG_CREATE_POS)
+    screen.blit(leaderImg, LRG_LEADER_POS)
+    screen.blit(helpImg, LRG_HELP_POS)
+    screen.blit(exitImg, LRG_EXIT_POS)
 
     return screenToGo
 
-def displayLoginScreen(screen, size, username, password, onUserField, onPassField, hide):
+def displayLoginScreen(screen, username, password, onUserField, onPassField, hide):
     mouseDown = False
     # Event Loop
     for event in pygame.event.get():
@@ -153,34 +127,19 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     #print onUserField, onPassField, username, password
 
     # Get image src
-    if size == "L":
-        bgImageSrc = "rsrc/large/title_BG.png"
-        loginTextSrc = "rsrc/large/login_Text.png"
-        usernameSrc = "rsrc/large/login_Username.png"
-        passwordSrc = "rsrc/large/login_Password.png"
-        fieldSrc = "rsrc/large/login_Field.png"
-        confirmSrc = "rsrc/large/login_Confirm.png"
-        exitSrc = "rsrc/large/title_Exit.png"
-        tickBoxSrc = "rsrc/large/tickBox.png"
-        field1Pos = LRG_LOGIN_FIELD1_POS
-        field2Pos = LRG_LOGIN_FIELD2_POS
-        confirmPos = LRG_LOGIN_CONFIRM_POS
-        exitPos = LRG_LOGIN_EXIT_POS
-        tickBoxPos = LRG_TICKBOX
-    elif size == "M":
-        bgImageSrc = "rsrc/medium/title_BG.png"
-        loginTextSrc = "rsrc/medium/login_Text.png"
-        usernameSrc = "rsrc/medium/login_Username.png"
-        passwordSrc = "rsrc/medium/login_Password.png"
-        fieldSrc = "rsrc/medium/login_Field.png"
-        confirmSrc = "rsrc/medium/login_Confirm.png"
-        exitSrc = "rsrc/medium/title_Exit.png"
-        field1Pos = MED_LOGIN_FIELD1_POS
-        field2Pos = MED_LOGIN_FIELD2_POS
-        confirmPos = MED_LOGIN_CONFIRM_POS
-        exitPos = MED_LOGIN_EXIT_POS
-    elif size == "S":
-        pass
+    bgImageSrc = "rsrc/large/title_BG.png"
+    loginTextSrc = "rsrc/large/login_Text.png"
+    usernameSrc = "rsrc/large/login_Username.png"
+    passwordSrc = "rsrc/large/login_Password.png"
+    fieldSrc = "rsrc/large/login_Field.png"
+    confirmSrc = "rsrc/large/login_Confirm.png"
+    exitSrc = "rsrc/large/title_Exit.png"
+    tickBoxSrc = "rsrc/large/tickBox.png"
+    field1Pos = LRG_LOGIN_FIELD1_POS
+    field2Pos = LRG_LOGIN_FIELD2_POS
+    confirmPos = LRG_LOGIN_CONFIRM_POS
+    exitPos = LRG_LOGIN_EXIT_POS
+    tickBoxPos = LRG_TICKBOX
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
@@ -194,22 +153,13 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
 
     # Load Letters
     letterDict = {} # A->Z->a->z filled
-    if size == "L":
-        for letterFile in os.listdir("rsrc/large/alphabet"):
-            if letterFile == "asterisk.png":
-                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
-            elif letterFile[0] != "." and letterFile[-3:] != ".py":
-                newLetterPath = "rsrc/large/alphabet/" + letterFile
-                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                letterDict[letterFile[2]] = newLetterImage
-    elif size == "M":
-        for letterFile in os.listdir("rsrc/medium/alphabet"):
-            if letterFile == "asterisk.png":
-                asteriskImage = pygame.image.load("rsrc/medium/alphabet/asterisk.png").convert_alpha()
-            elif letterFile[0] != "." and letterFile[-3:] != ".py":
-                newLetterPath = "rsrc/medium/alphabet/" + letterFile
-                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                letterDict[letterFile[2]] = newLetterImage
+    for letterFile in os.listdir("rsrc/large/alphabet"):
+        if letterFile == "asterisk.png":
+            asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+        elif letterFile[0] != "." and letterFile[-3:] != ".py":
+            newLetterPath = "rsrc/large/alphabet/" + letterFile
+            newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+            letterDict[letterFile[2]] = newLetterImage
 
     # Create buttons
     field1Btn = Button(fieldImg, field1Pos)
@@ -246,56 +196,32 @@ def displayLoginScreen(screen, size, username, password, onUserField, onPassFiel
     # Blit
     screen.blit(bgImage, ORIGIN)
 
-    if size == "L":
-        screen.blit(loginTextImg, LRG_LOGIN_TITLE_POS)
-        screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
-        screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
-        screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
-        screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
-        screen.blit(tickBoxImg, LRG_TICKBOX)
+    screen.blit(loginTextImg, LRG_LOGIN_TITLE_POS)
+    screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
+    screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
+    screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
+    screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
+    screen.blit(tickBoxImg, LRG_TICKBOX)
 
-        if hide == True:
-        	screen.blit(asteriskImage, LRG_CHK_AST)
+    if hide == True:
+    	screen.blit(asteriskImage, LRG_CHK_AST)
 
-        totalWidth = 0
-        for e, letter in enumerate(username):
-            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+    totalWidth = 0
+    for e, letter in enumerate(username):
+        screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+        totalWidth += letterDict[letter].get_width()
+
+    totalWidth = 0
+    for e, letter in enumerate(password):
+        if hide == False:
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
+        else:
+            screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
+            totalWidth += asteriskImage.get_width()
 
-        totalWidth = 0
-        for e, letter in enumerate(password):
-            if hide == False:
-                screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-                totalWidth += letterDict[letter].get_width()
-            else:
-                screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
-                totalWidth += asteriskImage.get_width()
-
-        screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
-        screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
-    elif size == "M":
-        #screen.blit(loginTextImg, MED_LOGIN_TITLE_POS)
-        screen.blit(usernameImg, MED_LOGIN_USERNAME_POS)
-        screen.blit(fieldImg, MED_LOGIN_FIELD1_POS)
-        screen.blit(passwordImg, MED_LOGIN_PASSWORD_POS)
-        screen.blit(fieldImg, MED_LOGIN_FIELD2_POS)
-
-        totalWidth = 0
-        for e, letter in enumerate(username):
-            screen.blit(letterDict[letter], (MED_USERNAME_START_POS[0] + totalWidth, MED_USERNAME_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
-
-        totalWidth = 0
-        for e, letter in enumerate(password):
-            if hide == False:
-                screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-                totalWidth += letterDict[letter].get_width()
-            else:
-                screen.blit(asteriskImage, (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - asteriskImage.get_height()))
-                totalWidth += asteriskImage.get_width()
-
-        screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
-        screen.blit(exitImg, MED_LOGIN_EXIT_POS)
+    screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
+    screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
 
     return screenToGo, username, password, onUserField, onPassField, hide
 
@@ -313,7 +239,7 @@ def checkLogin(username, password):
 
     return isValid
 
-def displayNewUserScreen(screen, size, username, password, onUserField, onPassField):
+def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     mouseDown = False
     hide = True
     # Event Loop
@@ -343,32 +269,17 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
     #print onUserField, onPassField, username, password
 
     # Get image src
-    if size == "L":
-        bgImageSrc = "rsrc/large/title_BG.png"
-        newUserTextSrc = "rsrc/large/createAcc_Text.png"
-        usernameSrc = "rsrc/large/login_Username.png"
-        passwordSrc = "rsrc/large/login_Password.png"
-        fieldSrc = "rsrc/large/login_Field.png"
-        confirmSrc = "rsrc/large/login_Confirm.png"
-        exitSrc = "rsrc/large/title_Exit.png"
-        field1Pos = LRG_LOGIN_FIELD1_POS
-        field2Pos = LRG_LOGIN_FIELD2_POS
-        confirmPos = LRG_LOGIN_CONFIRM_POS
-        exitPos = LRG_LOGIN_EXIT_POS
-    elif size == "M":
-        bgImageSrc = "rsrc/medium/title_BG.png"
-        newUserTextSrc = "rsrc/medium/createAcc_Text.png" # Lost file
-        usernameSrc = "rsrc/medium/login_Username.png"
-        passwordSrc = "rsrc/medium/login_Password.png"
-        fieldSrc = "rsrc/medium/login_Field.png"
-        confirmSrc = "rsrc/medium/login_Confirm.png"
-        exitSrc = "rsrc/medium/title_Exit.png"
-        field1Pos = MED_LOGIN_FIELD1_POS
-        field2Pos = MED_LOGIN_FIELD2_POS
-        confirmPos = MED_LOGIN_CONFIRM_POS
-        exitPos = MED_LOGIN_EXIT_POS
-    elif size == "S":
-        pass
+    bgImageSrc = "rsrc/large/title_BG.png"
+    newUserTextSrc = "rsrc/large/createAcc_Text.png"
+    usernameSrc = "rsrc/large/login_Username.png"
+    passwordSrc = "rsrc/large/login_Password.png"
+    fieldSrc = "rsrc/large/login_Field.png"
+    confirmSrc = "rsrc/large/login_Confirm.png"
+    exitSrc = "rsrc/large/title_Exit.png"
+    field1Pos = LRG_LOGIN_FIELD1_POS
+    field2Pos = LRG_LOGIN_FIELD2_POS
+    confirmPos = LRG_LOGIN_CONFIRM_POS
+    exitPos = LRG_LOGIN_EXIT_POS
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
@@ -381,20 +292,13 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
 
     # Load Letters
     letterDict = {} # A->Z->a->z filled
-    if size == "L":
-        for letterFile in os.listdir("rsrc/large/alphabet"):
-            if letterFile == "asterisk.png":
-                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
-            elif letterFile[0] != "." and letterFile[-3:] != ".py":
-                newLetterPath = "rsrc/large/alphabet/" + letterFile
-                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                letterDict[letterFile[2]] = newLetterImage
-    elif size == "M":
-        for letterFile in os.listdir("rsrc/medium/alphabet"):
-            if letterFile[0] != "." and letterFile[-3:] != ".py":
-                newLetterPath = "rsrc/medium/alphabet/" + letterFile
-                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                letterDict[letterFile[2]] = newLetterImage
+    for letterFile in os.listdir("rsrc/large/alphabet"):
+        if letterFile == "asterisk.png":
+            asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+        elif letterFile[0] != "." and letterFile[-3:] != ".py":
+            newLetterPath = "rsrc/large/alphabet/" + letterFile
+            newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+            letterDict[letterFile[2]] = newLetterImage
 
     # Create buttons
     field1Btn = Button(fieldImg, field1Pos)
@@ -426,48 +330,28 @@ def displayNewUserScreen(screen, size, username, password, onUserField, onPassFi
     # Blit
     screen.blit(bgImage, ORIGIN)
 
-    if size == "L":
-        screen.blit(newUserTextImg, LRG_NEWUSER_TITLE_POS)
-        screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
-        screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
-        screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
-        screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
+    screen.blit(newUserTextImg, LRG_NEWUSER_TITLE_POS)
+    screen.blit(usernameImg, LRG_LOGIN_USERNAME_POS)
+    screen.blit(fieldImg, LRG_LOGIN_FIELD1_POS)
+    screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
+    screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
 
-        totalWidth = 0
-        for e, letter in enumerate(username):
-            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+    totalWidth = 0
+    for e, letter in enumerate(username):
+        screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+        totalWidth += letterDict[letter].get_width()
+
+    totalWidth = 0
+    for e, letter in enumerate(password):
+        if hide == False:
+            screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
+        else:
+            screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
+            totalWidth += asteriskImage.get_width()
 
-        totalWidth = 0
-        for e, letter in enumerate(password):
-            if hide == False:
-                screen.blit(letterDict[letter], (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-                totalWidth += letterDict[letter].get_width()
-            else:
-                screen.blit(asteriskImage, (LRG_PASSWORD_START_POS[0] + totalWidth, LRG_PASSWORD_START_POS[1] - asteriskImage.get_height()))
-                totalWidth += asteriskImage.get_width()
-
-        screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
-        screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
-    elif size == "M":
-        screen.blit(newUserTextImg, MED_NEWUSER_TITLE_POS)
-        screen.blit(usernameImg, MED_LOGIN_USERNAME_POS)
-        screen.blit(fieldImg, MED_LOGIN_FIELD1_POS)
-        screen.blit(passwordImg, MED_LOGIN_PASSWORD_POS)
-        screen.blit(fieldImg, MED_LOGIN_FIELD2_POS)
-
-        totalWidth = 0
-        for e, letter in enumerate(username):
-            screen.blit(letterDict[letter], (MED_USERNAME_START_POS[0] + totalWidth, MED_USERNAME_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
-
-        totalWidth = 0
-        for e, letter in enumerate(password):
-            screen.blit(letterDict[letter], (MED_PASSWORD_START_POS[0] + totalWidth, MED_PASSWORD_START_POS[1] - letterDict[letter].get_height()))
-            totalWidth += letterDict[letter].get_width()
-
-        screen.blit(confirmImg, MED_LOGIN_CONFIRM_POS)
-        screen.blit(exitImg, MED_LOGIN_EXIT_POS)
+    screen.blit(confirmImg, LRG_LOGIN_CONFIRM_POS)
+    screen.blit(exitImg, LRG_LOGIN_EXIT_POS)
 
     return screenToGo, username, password, onUserField, onPassField
 
@@ -483,7 +367,7 @@ def storeNewUser(username, password):
     userFile.write(username+";"+password+"\n")
     userFile.close()
 
-def displayHelpScreen(screen, size):
+def displayHelpScreen(screen):
     mouseDown = False
     # Event Loop
     for event in pygame.event.get():
@@ -493,21 +377,10 @@ def displayHelpScreen(screen, size):
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
 
-    if size == "L":
-        bgImageSrc = "rsrc/large/title_BG.png"
-        helpTxtSrc = "rsrc/large/help_Text.png"
-        helpBodySrc = "rsrc/large/help_Body.png"
-        helpDoneSrc = "rsrc/large/help_Done.png"
-    elif size == "M":
-        bgImageSrc = "rsrc/medium/title_BG.png"
-        helpTxtSrc = "rsrc/medium/help_Text.png"
-        helpBodySrc = "rsrc/medium/help_Body.png"
-        helpDoneSrc = "rsrc/medium/help_Done.png"
-    elif size == "S":
-        bgImageSrc = "rsrc/small/title_BG.png"
-        helpTxtSrc = "rsrc/small/help_Text.png"
-        helpBodySrc = "rsrc/small/help_Body.png"
-        helpDoneSrc = "rsrc/small/help_Done.png"
+    bgImageSrc = "rsrc/large/title_BG.png"
+    helpTxtSrc = "rsrc/large/help_Text.png"
+    helpBodySrc = "rsrc/large/help_Body.png"
+    helpDoneSrc = "rsrc/large/help_Done.png"
 
     # Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
@@ -516,10 +389,7 @@ def displayHelpScreen(screen, size):
     helpDoneImg = pygame.image.load(helpDoneSrc).convert_alpha()
 
     # Create Buttons
-    if size == "L":
-        doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
-    elif size == "M":
-        doneBtn = Button(helpDoneImg, MED_HELP_DONE_POS)
+    doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
 
     # Handle Actions
     mousePos = pygame.mouse.get_pos()
@@ -531,31 +401,22 @@ def displayHelpScreen(screen, size):
     # Render
     screen.blit(bgImage, ORIGIN)
 
-    if size == "L":
-        screen.blit(helpTxtImg, LRG_HELP_TITLE_POS)
-        screen.blit(helpBodyImg, LRG_HELP_BODY_POS)
-        screen.blit(helpDoneImg, LRG_HELP_DONE_POS)
-    elif size == "M":
-        screen.blit(helpTxtImg, MED_HELP_TITLE_POS)
-        screen.blit(helpBodyImg, MED_HELP_BODY_POS)
-        screen.blit(helpDoneImg, MED_HELP_DONE_POS)
-    elif size == "S":
-        screen.blit(helpTxtImg, SML_HELP_TITLE_POS)
-        screen.blit(helpBodyImg, SML_HELP_BODY_POS)
-        screen.blit(helpDoneImg, SML_HELP_DONE_POS)
+    screen.blit(helpTxtImg, LRG_HELP_TITLE_POS)
+    screen.blit(helpBodyImg, LRG_HELP_BODY_POS)
+    screen.blit(helpDoneImg, LRG_HELP_DONE_POS)
 
     return screenToGo
 
-def playGame(screen, size, user):
-    score = playScrollingTextGame(screen, size)
+def playGame(screen, user):
+    score = playScrollingTextGame(screen)
     submitScore(user, score, "scores_alltime.txt")
-    avatar = openStoreScreen(screen, size, score)
+    avatar = openStoreScreen(screen, score)
     #avatar.displayStats()
     playBattleScene(screen, avatar)
     screenToGo = TITLE
     return screenToGo
 
-def playScrollingTextGame(screen, size):
+def playScrollingTextGame(screen):
     running = True
     score = 0
 
@@ -584,8 +445,7 @@ def playScrollingTextGame(screen, size):
                     currentWord = currentWord[:-1]
                 #print currentWord, wordOnScreen
 
-        if size == "L":
-            bgImageSrc = "rsrc/large/title_BG.png"
+        bgImageSrc = "rsrc/large/title_BG.png"
 
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
 
@@ -594,37 +454,29 @@ def playScrollingTextGame(screen, size):
             wordList.remove(wordOnScreen)
             newWord = False
 
-        if size == "L":
-            # Load Letters
-            letterDict = {} # A->Z->a->z filled
-            for letterFile in os.listdir("rsrc/large/alphabet"):
-                if letterFile == "asterisk.png":
-                    asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
-                elif letterFile[0] != "." and letterFile[-3:] != ".py":
-                    newLetterPath = "rsrc/large/alphabet/" + letterFile
-                    newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                    letterDict[letterFile[2]] = newLetterImage
+        # Load Letters
+        letterDict = {} # A->Z->a->z filled
+        for letterFile in os.listdir("rsrc/large/alphabet"):
+            if letterFile == "asterisk.png":
+                asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            elif letterFile[0] != "." and letterFile[-3:] != ".py":
+                newLetterPath = "rsrc/large/alphabet/" + letterFile
+                newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
+                letterDict[letterFile[2]] = newLetterImage
+        
+        # Load Numbers
+        numberDict = {} # 1->9->0 filled
+        for numberFile in os.listdir("rsrc/large/numbers"):
+            if numberFile[0] != "y": # b: yellow; y: blue
+                newNumberPath = "rsrc/large/numbers/" + numberFile
+                newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                numberDict[numberFile[1]] = newNumberImage
+        
+        barSrc = "rsrc/large/game_Bar.png"
+        fieldSrc = "rsrc/large/game_Field.png"
+        typewordSrc = "rsrc/large/game_TypeWord.png"
+        clockSrc = "rsrc/large/game_Clock.png"
             
-            # Load Numbers
-            numberDict = {} # 1->9->0 filled
-            for numberFile in os.listdir("rsrc/large/numbers"):
-                if numberFile[0] != "y": # b: yellow; y: blue
-                    newNumberPath = "rsrc/large/numbers/" + numberFile
-                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
-                    numberDict[numberFile[1]] = newNumberImage
-            
-            barSrc = "rsrc/large/game_Bar.png"
-            fieldSrc = "rsrc/large/game_Field.png"
-            typewordSrc = "rsrc/large/game_TypeWord.png"
-            clockSrc = "rsrc/large/game_Clock.png"
-            
-        elif size == "M":
-            for letterFile in os.listdir("rsrc/medium/alphabet"):
-                if letterFile[0] != "." and letterFile[-3:] != ".py":
-                    newLetterPath = "rsrc/medium/alphabet/" + letterFile
-                    newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
-                    letterDict[letterFile[2]] = newLetterImage
-
         barImg = pygame.image.load(barSrc).convert_alpha()
         fieldImg = pygame.image.load(fieldSrc).convert_alpha()
         typewordImg = pygame.image.load(typewordSrc).convert_alpha()
@@ -638,29 +490,28 @@ def playScrollingTextGame(screen, size):
         if elapsedTime >= 30:
             running = False
 
-        if size == "L":
-            screen.blit(barImg, LRG_GAME_BAR)
-            screen.blit(fieldImg, LRG_GAME_FIELD)
-            screen.blit(typewordImg, LRG_GAME_TYPE)
-            screen.blit(clockImg, LRG_GAME_CLOCK)
-                              
-            # Display current word to type
-            totalWidth = 0
-            for e, letter in enumerate(wordOnScreen):
-                screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
-                totalWidth += letterDict[letter].get_width()
-        
-            # Display current typing progress of word
-            totalWidth = 0
-            for e, letter in enumerate(currentWord):
-                screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + totalWidth, LRG_GAME_CRTWORD[1] - letterDict[letter].get_height()))
-                totalWidth += letterDict[letter].get_width()
-                
-            # Display score
-            totalWidth = 0
-            for e, number in enumerate(str(int(30-elapsedTime))):
-                screen.blit(numberDict[number], (LRG_GAME_CLOCK[0]+25 + totalWidth, LRG_GAME_CLOCK[1]+20+(94/2) - numberDict[number].get_height()))
-                totalWidth += numberDict[number].get_width()
+        screen.blit(barImg, LRG_GAME_BAR)
+        screen.blit(fieldImg, LRG_GAME_FIELD)
+        screen.blit(typewordImg, LRG_GAME_TYPE)
+        screen.blit(clockImg, LRG_GAME_CLOCK)
+                          
+        # Display current word to type
+        totalWidth = 0
+        for e, letter in enumerate(wordOnScreen):
+            screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+    
+        # Display current typing progress of word
+        totalWidth = 0
+        for e, letter in enumerate(currentWord):
+            screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + totalWidth, LRG_GAME_CRTWORD[1] - letterDict[letter].get_height()))
+            totalWidth += letterDict[letter].get_width()
+            
+        # Display score
+        totalWidth = 0
+        for e, number in enumerate(str(int(30-elapsedTime))):
+            screen.blit(numberDict[number], (LRG_GAME_CLOCK[0]+25 + totalWidth, LRG_GAME_CLOCK[1]+20+(94/2) - numberDict[number].get_height()))
+            totalWidth += numberDict[number].get_width()
         
         if currentWord == wordOnScreen:
             newWord = True
@@ -698,7 +549,7 @@ class Avatar:
     def displayStats(self):
         print self.attack, self.armor, self.magic
         
-def openStoreScreen(screen, size, score):
+def openStoreScreen(screen, score):
     mouseDown = False
     running = True
     points = score
@@ -713,20 +564,15 @@ def openStoreScreen(screen, size, score):
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
                 
-        if size == "L":
-            bgImageSrc = "rsrc/large/title_BG.png"
-            storeTextSrc = "rsrc/large/sText.png"
-            attackSrc = "rsrc/large/attack.png"
-            armorSrc = "rsrc/large/armor.png"
-            magicSrc = "rsrc/large/magic.png"
-            pointsLeftSrc = "rsrc/large/pointsLeft.png"
-            storeBodySrc = "rsrc/large/sBody.png"
-            storePlusSrc = "rsrc/large/plusBox.png"
-            doneSrc = "rsrc/large/help_Done.png"
-        elif size == "M":
-            bgImageSrc = "rsrc/medium/title_BG.png"
-        elif size == "S":
-            BgImageSrc = "rsrc/small/title_BG.png"
+        bgImageSrc = "rsrc/large/title_BG.png"
+        storeTextSrc = "rsrc/large/sText.png"
+        attackSrc = "rsrc/large/attack.png"
+        armorSrc = "rsrc/large/armor.png"
+        magicSrc = "rsrc/large/magic.png"
+        pointsLeftSrc = "rsrc/large/pointsLeft.png"
+        storeBodySrc = "rsrc/large/sBody.png"
+        storePlusSrc = "rsrc/large/plusBox.png"
+        doneSrc = "rsrc/large/help_Done.png"
 
         doneImg = pygame.image.load(doneSrc).convert_alpha()
 
@@ -741,21 +587,17 @@ def openStoreScreen(screen, size, score):
                 
         # Load Numbers
         numberDict = {} # A->Z->a->z filled
-        if size == "L":
-            for numberFile in os.listdir("rsrc/large/numbers"):
-                if numberFile[0] != "y":
-                    newNumberPath = "rsrc/large/numbers/" + numberFile
-                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
-                    numberDict[numberFile[1]] = newNumberImage
+        for numberFile in os.listdir("rsrc/large/numbers"):
+            if numberFile[0] != "y":
+                newNumberPath = "rsrc/large/numbers/" + numberFile
+                newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                numberDict[numberFile[1]] = newNumberImage
 
         # Create Buttons
-        if size == "L":
-            doneBtn = Button(doneImg, LRG_STORE_DONE_POS)
-            attBtn = Button(storePlusImg, LRG_ATK_PLS_POS)
-            arrBtn = Button(storePlusImg, LRG_ARR_PLS_POS)
-            magBtn = Button(storePlusImg, LRG_MAG_PLS_POS)
-        elif size == "M":
-            doneBtn = Button(doneImg, MED_HELP_DONE_POS)
+        doneBtn = Button(doneImg, LRG_STORE_DONE_POS)
+        attBtn = Button(storePlusImg, LRG_ATK_PLS_POS)
+        arrBtn = Button(storePlusImg, LRG_ARR_PLS_POS)
+        magBtn = Button(storePlusImg, LRG_MAG_PLS_POS)
 
         # Handle Actions
         mousePos = pygame.mouse.get_pos()
@@ -777,46 +619,40 @@ def openStoreScreen(screen, size, score):
 
         screen.blit(bgImage, ORIGIN)
                 
-        if size == "L":
-            screen.blit(storeText, LRG_HELP_TITLE_POS)
-            screen.blit(storeBodyImg, LRG_STORE_BODY_POS)
-            screen.blit(attackImg, LRG_STORE_ATK_POS)
-            screen.blit(armorImg, LRG_STORE_ARR_POS)
-            screen.blit(magicImg, LRG_STORE_MAG_POS)
-            screen.blit(pointsLeftImg, LRG_PTNSLFT_POS)
-            screen.blit(storePlusImg, LRG_ATK_PLS_POS)
-            screen.blit(storePlusImg, LRG_ARR_PLS_POS)
-            screen.blit(storePlusImg, LRG_MAG_PLS_POS)
-            screen.blit(doneImg, LRG_STORE_DONE_POS)
+        screen.blit(storeText, LRG_HELP_TITLE_POS)
+        screen.blit(storeBodyImg, LRG_STORE_BODY_POS)
+        screen.blit(attackImg, LRG_STORE_ATK_POS)
+        screen.blit(armorImg, LRG_STORE_ARR_POS)
+        screen.blit(magicImg, LRG_STORE_MAG_POS)
+        screen.blit(pointsLeftImg, LRG_PTNSLFT_POS)
+        screen.blit(storePlusImg, LRG_ATK_PLS_POS)
+        screen.blit(storePlusImg, LRG_ARR_PLS_POS)
+        screen.blit(storePlusImg, LRG_MAG_PLS_POS)
+        screen.blit(doneImg, LRG_STORE_DONE_POS)
 
-            # Display points left
-            totalWidth = 0
-            for e, number in enumerate(str(score)):
-                screen.blit(numberDict[number], (LRG_PTNSLFT_POS[0]+100 + totalWidth, LRG_PTNSLFT_POS[1]+100 - numberDict[number].get_height()))
-                totalWidth += numberDict[number].get_width()
+        # Display points left
+        totalWidth = 0
+        for e, number in enumerate(str(score)):
+            screen.blit(numberDict[number], (LRG_PTNSLFT_POS[0]+100 + totalWidth, LRG_PTNSLFT_POS[1]+100 - numberDict[number].get_height()))
+            totalWidth += numberDict[number].get_width()
 
-            # Display attack
-            totalWidth = 0
-            for e, number in enumerate(str(avatar.attack)):
-                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ATK_PLS_POS[1]+10))
-                totalWidth += numberDict[number].get_width()
+        # Display attack
+        totalWidth = 0
+        for e, number in enumerate(str(avatar.attack)):
+            screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ATK_PLS_POS[1]+10))
+            totalWidth += numberDict[number].get_width()
 
-            # Display armor
-            totalWidth = 0
-            for e, number in enumerate(str(avatar.armor)):
-                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ARR_PLS_POS[1]+10))
-                totalWidth += numberDict[number].get_width()
+        # Display armor
+        totalWidth = 0
+        for e, number in enumerate(str(avatar.armor)):
+            screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ARR_PLS_POS[1]+10))
+            totalWidth += numberDict[number].get_width()
 
-            # Display magic
-            totalWidth = 0
-            for e, number in enumerate(str(avatar.magic)):
-                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_MAG_PLS_POS[1]+10))
-                totalWidth += numberDict[number].get_width()
-
-        #elif size == "M":
-            # All elements
-        #elif size == "S":
-            # All elements        
+        # Display magic
+        totalWidth = 0
+        for e, number in enumerate(str(avatar.magic)):
+            screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_MAG_PLS_POS[1]+10))
+            totalWidth += numberDict[number].get_width()    
                 
         pygame.display.update()
     return avatar
@@ -947,8 +783,7 @@ def parseScores(filename):
             fileToWrite.write(element)
     fileToWrite.close()
 
-
-def displayHighScores(screen, size):
+def displayHighScores(screen):
     mouseDown = False
     running = True
     while running:
@@ -960,19 +795,14 @@ def displayHighScores(screen, size):
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
 
-        if size == "L":
-            bgImageSrc = "rsrc/large/title_BG.png"
-            highScoreTxtSrc = "rsrc/large/leader_Text.png"
-            dailySrc = "rsrc/large/leader_Daily.png"
-            allTimeSrc = "rsrc/large/leader_AllTime.png"
-            userSrc = "rsrc/large/leader_Username.png"
-            scoreSrc = "rsrc/large/leader_Score.png"
-            barSrc = "rsrc/large/leader_Bar.png"
-            doneBtnSrc = "rsrc/large/help_Done.png"
-        elif size == "M":
-            bgImageSrc = "rsrc/medium/title_BG.png"
-        elif size == "S":
-            bgImageSrc = "rsrc/small/title_BG.png"
+        bgImageSrc = "rsrc/large/title_BG.png"
+        highScoreTxtSrc = "rsrc/large/leader_Text.png"
+        dailySrc = "rsrc/large/leader_Daily.png"
+        allTimeSrc = "rsrc/large/leader_AllTime.png"
+        userSrc = "rsrc/large/leader_Username.png"
+        scoreSrc = "rsrc/large/leader_Score.png"
+        barSrc = "rsrc/large/leader_Bar.png"
+        doneBtnSrc = "rsrc/large/help_Done.png"
 
         # Load Images
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
@@ -986,12 +816,11 @@ def displayHighScores(screen, size):
 
         # Load Numbers
         numberDict = {} # A->Z->a->z filled
-        if size == "L":
-            for numberFile in os.listdir("rsrc/large/numbers"):
-                if numberFile[0] != "b": # Yellow Numbers
-                    newNumberPath = "rsrc/large/numbers/" + numberFile
-                    newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
-                    numberDict[numberFile[1]] = newNumberImage
+        for numberFile in os.listdir("rsrc/large/numbers"):
+            if numberFile[0] != "b": # Yellow Numbers
+                newNumberPath = "rsrc/large/numbers/" + numberFile
+                newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
+                numberDict[numberFile[1]] = newNumberImage
 
         # Load Letters
         letterDict = {} # A->Z->a->z filled
@@ -1004,10 +833,7 @@ def displayHighScores(screen, size):
                 letterDict[letterFile[2]] = newLetterImage
 
         # Create Buttons
-        if size == "L":
-            doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
-        elif size == "M":
-            doneBtn = Button(doneBtnImg, MED_HELP_DONE_POS)
+        doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
 
         # Handle Actions
         mousePos = pygame.mouse.get_pos()
@@ -1020,64 +846,56 @@ def displayHighScores(screen, size):
         # Render
         screen.blit(bgImage, ORIGIN)
 
-        if size == "L":
-            screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
-            screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
-            
-            screen.blit(dailyImg, LRG_LEADER_DAILY)
-            screen.blit(userImg, LRG_LEADER_DUSER)
-            screen.blit(scoreImg, LRG_LEADER_DSCORE)
-            screen.blit(barImg, LRG_LEADER_DBAR)
+        screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
+        screen.blit(doneBtnImg, LRG_HELP_DONE_POS)
+        
+        screen.blit(dailyImg, LRG_LEADER_DAILY)
+        screen.blit(userImg, LRG_LEADER_DUSER)
+        screen.blit(scoreImg, LRG_LEADER_DSCORE)
+        screen.blit(barImg, LRG_LEADER_DBAR)
 
-            # Display Daily Scores
-            # Display All Time Scores
-            a = readFileIntoArray("scores_daily.txt")
-            parseScores("scores_daily.txt")
-            arrayOfScores = readFileIntoArray("scores_daily.txt")
-            for e, element in enumerate(arrayOfScores):
-                arrayOfScores[e] = element.split(';')
+        # Display Daily Scores
+        # Display All Time Scores
+        a = readFileIntoArray("scores_daily.txt")
+        parseScores("scores_daily.txt")
+        arrayOfScores = readFileIntoArray("scores_daily.txt")
+        for e, element in enumerate(arrayOfScores):
+            arrayOfScores[e] = element.split(';')
 
-                # Display score
-                totalWidth = 0
-                for number in arrayOfScores[e][1]:
-                    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
-                    totalWidth += numberDict[number].get_width()
+            # Display score
+            totalWidth = 0
+            for number in arrayOfScores[e][1]:
+                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                totalWidth += numberDict[number].get_width()
 
-                # Display Username
-                totalWidth = 0
-                for letter in arrayOfScores[e][0]:
-                    screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230-470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
-                    totalWidth += letterDict[letter].get_width()
+            # Display Username
+            totalWidth = 0
+            for letter in arrayOfScores[e][0]:
+                screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230-470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                totalWidth += letterDict[letter].get_width()
 
-            screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
-            screen.blit(userImg, LRG_LEADER_AUSER)
-            screen.blit(scoreImg, LRG_LEADER_ASCORE)
-            screen.blit(barImg, LRG_LEADER_ABAR)
+        screen.blit(allTimeImg, LRG_LEADER_ALLTIME)
+        screen.blit(userImg, LRG_LEADER_AUSER)
+        screen.blit(scoreImg, LRG_LEADER_ASCORE)
+        screen.blit(barImg, LRG_LEADER_ABAR)
 
-            # Display All Time Scores
-            parseScores("scores_alltime.txt")
-            arrayOfScores = readFileIntoArray("scores_alltime.txt")
-            for e, element in enumerate(arrayOfScores):
-                arrayOfScores[e] = element.split(';')
+        # Display All Time Scores
+        parseScores("scores_alltime.txt")
+        arrayOfScores = readFileIntoArray("scores_alltime.txt")
+        for e, element in enumerate(arrayOfScores):
+            arrayOfScores[e] = element.split(';')
 
-                # Display Username
-                totalWidth = 0
-                for letter in arrayOfScores[e][0]:
-                    screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
-                    totalWidth += letterDict[letter].get_width()
+            # Display Username
+            totalWidth = 0
+            for letter in arrayOfScores[e][0]:
+                screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                totalWidth += letterDict[letter].get_width()
 
-                # Display score
-                totalWidth = 0
-                for number in arrayOfScores[e][1]:
-                    screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + 470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
-                    totalWidth += numberDict[number].get_width()
-
-        elif size == "M":
-            screen.blit(highScoreImg, MED_HELP_TITLE_POS)
-            screen.blit(doneBtnImg, MED_HELP_DONE_POS)
-        elif size == "S":
-            screen.blit(highScoreImg, SML_HELP_TITLE_POS)
-            screen.blit(doneBtnImg, SML_HELP_DONE_POS)
+            # Display score
+            totalWidth = 0
+            for number in arrayOfScores[e][1]:
+                screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + 470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
+                totalWidth += numberDict[number].get_width()
 
         pygame.display.update()
 
