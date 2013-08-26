@@ -872,7 +872,6 @@ def sortDailyScores(allScores, dailyScores):
     ## Must be deleted in reverse order so to keep index positions
     arrayOfIndexs.reverse()
     for i in arrayOfIndexs:
-        print i
         del arrayOfScores[i]
 
     ## Sort by score - decending
@@ -902,11 +901,13 @@ def parseScores(filename):
 
     ## Reduce file down to 3 entries
     for e, element in enumerate(arrayOfScores):
+        ## Reduce
         if len(arrayOfScores) > 3:
             if e < 3:
                 fileToWrite.write(element)
             else:
                 break
+        ## Don't reduce
         else:
             fileToWrite.write(element)
 
