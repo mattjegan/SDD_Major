@@ -25,7 +25,7 @@ def storeNewUserDriver():
     print "         matthew;egannn"
     print "         dogdog;catcat"
     print "         marrio;luiggi"
-    if raw_input("Y/N? ") == ("Y" or "y"):
+    if raw_input("Y/N? ") == "Y":
         return True
     else:
         return False
@@ -56,7 +56,7 @@ def submitScoreDriver():
     print "         matthew;10;xxxxxx"
     print "         matthew;12;xxxxxx"
     print "         marrio;-1;xxxxxx"
-    if raw_input("Y/N? ") == ("Y" or "y"):
+    if raw_input("Y/N? ") == "Y":
         return True
     else:
         return False
@@ -68,19 +68,19 @@ def sortAllTimeScoresDriver():
     print "         matthew;12;xxxxxx"
     print "         matthew;10;xxxxxx"
     print "         marrio;-1;xxxxxx"
-    if raw_input("Y/N? ") == ("Y" or "y"):
+    if raw_input("Y/N? ") == "Y":
         return True
     else:
         return False
 
 def sortDailyScoresDriver():
-    sortDailyScores("scores_daily.txt")
-    print "MUST DO: Examin scores_alltime.txt"
+    sortDailyScores("scores_alltime.txt", "scores_daily.txt")
+    print "MUST DO: Examin scores_daily.txt"
     print "         confirm the following contents:"
     print "         matthew;12;xxxxxx"
     print "         matthew;10;xxxxxx"
     print "         marrio;-1;xxxxxx"
-    if raw_input("Y/N? ") == ("Y" or "y"):
+    if raw_input("Y/N? ") == "Y":
         return True
     else:
         return False
