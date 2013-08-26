@@ -3,25 +3,35 @@
 ## Written by Matthew Egan
 ## Last Revision: 19th August 2013
 
+## Import all needed libraries
+
+## Built-ins
 import os
 import sys
 import time
 import datetime
 import string
 import random
+
+## Externals
 import pygame
 from bw_Cons import *
 from pygame.locals import *
 
 ## Class used for button detection
 class Button:
+    ## Initialisation method
     def __init__(self, image, topPos):
+        ## Set top left corner values
         self.x = topPos[0]
         self.y = topPos[1]
+        ## Set dimensional values
         self.x_len = image.get_width()
         self.y_len = image.get_height()
-    def checkTouch(self, pos): ## Compares pos to the location of the ScreenImage instance
+    ## Compares pos to the location of the ScreenImage instance
+    def checkTouch(self, pos): 
         mos_x, mos_y = pos[0], pos[1]
+        ## Determine whether por not pos is inside the image
         if mos_x > self.x and mos_x < self.x + self.x_len:
             x_inside = True
         else:
@@ -37,14 +47,17 @@ class Button:
 
 def displayTitleScreen(screen):
     mouseDown = False
-    # Event Loop
+    ## Event Loop
     for event in pygame.event.get():
+        ## Check Quit event
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        ## Check MouseDown event
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
     
+    ## Set image paths
     bgImageSrc = "rsrc/large/title_BG.png"
     bwTextSrc = "rsrc/large/title_Text.png"
     loginSrc = "rsrc/large/title_Login.png"
@@ -52,14 +65,17 @@ def displayTitleScreen(screen):
     leaderSrc = "rsrc/large/title_Leaderboards.png"
     helpSrc = "rsrc/large/title_Help.png"
     exitSrc = "rsrc/large/title_Exit.png"
+
+    ## Set image positions
     loginPos = LRG_LOGIN_POS
     createPos = LRG_CREATE_POS
     leaderPos = LRG_LEADER_POS
     helpPos = LRG_HELP_POS
     exitPos = LRG_EXIT_POS
 
-    # Load Images
-    bgImage = pygame.image.load(bgImageSrc).convert_alpha() # Convert alpha since png is transparent
+    ## Load Images
+    ## Convert alpha allows transparent background (png)
+    bgImage = pygame.image.load(bgImageSrc).convert_alpha()
     bwText = pygame.image.load(bwTextSrc).convert_alpha()
     loginImg = pygame.image.load(loginSrc).convert_alpha()
     createImg = pygame.image.load(createSrc).convert_alpha() 
@@ -67,16 +83,17 @@ def displayTitleScreen(screen):
     helpImg = pygame.image.load(helpSrc).convert_alpha()
     exitImg = pygame.image.load(exitSrc).convert_alpha()
 
-    # Create Buttons
+    ## Create Buttons
     loginBtn = Button(loginImg, loginPos)
     createBtn = Button(createImg, createPos)
     leaderBtn = Button(leaderImg, leaderPos)
     helpBtn = Button(helpImg, helpPos)
     exitBtn = Button(exitImg, exitPos)
 
+    ## Get mouse position
     mousePos = pygame.mouse.get_pos()
 
-    # Check Actions
+    ## Evaluate Actions
     if mouseDown:
         if loginBtn.checkTouch(mousePos): screenToGo = LOGIN
         elif createBtn.checkTouch(mousePos): screenToGo = NEWUSER
@@ -86,7 +103,7 @@ def displayTitleScreen(screen):
         else: screenToGo = TITLE
     else: screenToGo = TITLE
 
-
+    ## Render the screen
     screen.blit(bgImage, ORIGIN)
 
     screen.blit(bwText, LRG_TITLE_POS)
@@ -100,20 +117,25 @@ def displayTitleScreen(screen):
 
 def displayLoginScreen(screen, username, password, onUserField, onPassField, hide):
     mouseDown = False
-    # Event Loop
+    ## Event Loop
     for event in pygame.event.get():
+        ## Check Quit event
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        ## Check MouseDown event
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
+        ## Check KeyDown event
         elif event.type == KEYDOWN:
+            ## Check modifiers (shift, capslock etc.)
             mods = pygame.key.get_mods()        
             if mods & KMOD_LSHIFT and event.key <= K_z and event.key >= K_a:
                 if onUserField:
                     username += string.upper(str(pygame.key.name(event.key)))
                 elif onPassField:
                     password += string.upper(str(pygame.key.name(event.key)))
+            ## Check without modifiers
             elif event.key <= K_z and event.key >= K_a:
                 if onUserField:
                     username += str(pygame.key.name(event.key))
@@ -123,10 +145,7 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
                 if onUserField: username = username[:-1]
                 elif onPassField: password = password[:-1]
 
-    # Display Debug Data
-    #print onUserField, onPassField, username, password
-
-    # Get image src
+    ## Set image paths
     bgImageSrc = "rsrc/large/title_BG.png"
     loginTextSrc = "rsrc/large/login_Text.png"
     usernameSrc = "rsrc/large/login_Username.png"
@@ -135,13 +154,15 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
     confirmSrc = "rsrc/large/login_Confirm.png"
     exitSrc = "rsrc/large/title_Exit.png"
     tickBoxSrc = "rsrc/large/tickBox.png"
+
+    ## Set image positions
     field1Pos = LRG_LOGIN_FIELD1_POS
     field2Pos = LRG_LOGIN_FIELD2_POS
     confirmPos = LRG_LOGIN_CONFIRM_POS
     exitPos = LRG_LOGIN_EXIT_POS
     tickBoxPos = LRG_TICKBOX
 
-    # Load Images
+    ## Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
     loginTextImg = pygame.image.load(loginTextSrc).convert_alpha()
     usernameImg = pygame.image.load(usernameSrc).convert_alpha()
@@ -151,26 +172,28 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
     exitImg = pygame.image.load(exitSrc).convert_alpha()
     tickBoxImg = pygame.image.load(tickBoxSrc).convert_alpha()
 
-    # Load Letters
+    ## Load Letters
     letterDict = {} # A->Z->a->z filled
     for letterFile in os.listdir("rsrc/large/alphabet"):
         if letterFile == "asterisk.png":
             asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+        ## Filter files in directory
         elif letterFile[0] != "." and letterFile[-3:] != ".py":
             newLetterPath = "rsrc/large/alphabet/" + letterFile
             newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
             letterDict[letterFile[2]] = newLetterImage
 
-    # Create buttons
+    ## Create buttons
     field1Btn = Button(fieldImg, field1Pos)
     field2Btn = Button(fieldImg, field2Pos)
     confirmBtn = Button(confirmImg, confirmPos)
     exitBtn = Button(exitImg, exitPos)
     tickBoxBtn = Button(tickBoxImg, tickBoxPos)
 
+    ## Get mouse position
     mousePos = pygame.mouse.get_pos()
 
-    # Check Actions
+    ## Evaluate Actions
     screenToGo = LOGIN
     if mouseDown:
         if field1Btn.checkTouch(mousePos): onUserField = True; onPassField = False
@@ -178,22 +201,20 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
         elif confirmBtn.checkTouch(mousePos): 
             onUserField = False
             onPassField = False
-            #print "Pressed Confirm"
-            #print checkLogin(username, password), "username/password"
             if checkLogin(username, password):
                 screenToGo = GAME
             else:
                 screenToGo = TITLE
         elif exitBtn.checkTouch(mousePos): screenToGo = TITLE
+        ## Check hide button
         elif tickBoxBtn.checkTouch(mousePos): 
             if hide == False:
                 hide = True
             else:
                 hide = False
         else: onUserField = False; onPassField = False; screenToGo = LOGIN
-    #print hide
 
-    # Blit
+    # Render screen
     screen.blit(bgImage, ORIGIN)
 
     screen.blit(loginTextImg, LRG_LOGIN_TITLE_POS)
@@ -203,14 +224,17 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
     screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
     screen.blit(tickBoxImg, LRG_TICKBOX)
 
+    ## Render text
     if hide == True:
     	screen.blit(asteriskImage, LRG_CHK_AST)
 
+    ## Render username
     totalWidth = 0
     for e, letter in enumerate(username):
         screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
         totalWidth += letterDict[letter].get_width()
 
+    ## Render password
     totalWidth = 0
     for e, letter in enumerate(password):
         if hide == False:
@@ -226,11 +250,13 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
     return screenToGo, username, password, onUserField, onPassField, hide
 
 def checkLogin(username, password):
+    ## Open file for reading and convert to array
     userFile = open("userFile.txt", "rU")
     userData = [line for line in userFile]
     userFile.close()
 
     isValid = False
+    ## Check if any matches occur
     for line in userData:
         scannedUser, scannedPass = line.strip("\n").split(";")
         if scannedUser == username and scannedPass == password:
@@ -242,20 +268,25 @@ def checkLogin(username, password):
 def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     mouseDown = False
     hide = True
-    # Event Loop
+    ## Event Loop
     for event in pygame.event.get():
+        ## Check Quit event
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        ## Check MouseDown event
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
+        ## Check KeyDown event
         elif event.type == KEYDOWN:
+            ## Check Modifiers (shift, capslock etc.)
             mods = pygame.key.get_mods()        
             if mods & KMOD_LSHIFT and event.key <= K_z and event.key >= K_a:
                 if onUserField:
                     username += string.upper(str(pygame.key.name(event.key)))
                 elif onPassField:
                     password += string.upper(str(pygame.key.name(event.key)))
+            ## Check without modifiers
             elif event.key <= K_z and event.key >= K_a:
                 if onUserField:
                     username += str(pygame.key.name(event.key))
@@ -265,10 +296,7 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
                 if onUserField: username = username[:-1]
                 elif onPassField: password = password[:-1]
 
-    # Display Debug Data
-    #print onUserField, onPassField, username, password
-
-    # Get image src
+    ## Set image paths
     bgImageSrc = "rsrc/large/title_BG.png"
     newUserTextSrc = "rsrc/large/createAcc_Text.png"
     usernameSrc = "rsrc/large/login_Username.png"
@@ -276,12 +304,14 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     fieldSrc = "rsrc/large/login_Field.png"
     confirmSrc = "rsrc/large/login_Confirm.png"
     exitSrc = "rsrc/large/title_Exit.png"
+
+    ## Set image positions
     field1Pos = LRG_LOGIN_FIELD1_POS
     field2Pos = LRG_LOGIN_FIELD2_POS
     confirmPos = LRG_LOGIN_CONFIRM_POS
     exitPos = LRG_LOGIN_EXIT_POS
 
-    # Load Images
+    ## Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
     newUserTextImg = pygame.image.load(newUserTextSrc).convert_alpha()
     usernameImg = pygame.image.load(usernameSrc).convert_alpha()
@@ -290,25 +320,27 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     confirmImg = pygame.image.load(confirmSrc).convert_alpha()
     exitImg = pygame.image.load(exitSrc).convert_alpha()
 
-    # Load Letters
+    ## Load Letters
     letterDict = {} # A->Z->a->z filled
     for letterFile in os.listdir("rsrc/large/alphabet"):
         if letterFile == "asterisk.png":
             asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+        ## Filter files in directory
         elif letterFile[0] != "." and letterFile[-3:] != ".py":
             newLetterPath = "rsrc/large/alphabet/" + letterFile
             newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
             letterDict[letterFile[2]] = newLetterImage
 
-    # Create buttons
+    ## Create buttons
     field1Btn = Button(fieldImg, field1Pos)
     field2Btn = Button(fieldImg, field2Pos)
     confirmBtn = Button(confirmImg, confirmPos)
     exitBtn = Button(exitImg, exitPos)
 
+    ## Get mouse position
     mousePos = pygame.mouse.get_pos()
 
-    # Check Actions
+    ## Evaluate Actions
     screenToGo = NEWUSER
     if mouseDown:
         if field1Btn.checkTouch(mousePos): onUserField = True; onPassField = False
@@ -317,8 +349,6 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
             onUserField = False
             onPassField = False
             isValid = checkValidUser(username, password)
-            #print "isValid", isValid
-            ## 0 = Invalid password, 1 = Valid, 2 = Invalid username
             if isValid == True: storeNewUser(username, password); screenToGo = GAME
             elif isValid == False: pass
             elif isValid == 2: pass 
@@ -327,7 +357,7 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
         else: onUserField = False; onPassField = False; screenToGo = NEWUSER
     
 
-    # Blit
+    ## Render Screen
     screen.blit(bgImage, ORIGIN)
 
     screen.blit(newUserTextImg, LRG_NEWUSER_TITLE_POS)
@@ -336,11 +366,13 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     screen.blit(passwordImg, LRG_LOGIN_PASSWORD_POS)
     screen.blit(fieldImg, LRG_LOGIN_FIELD2_POS)
 
+    ## Render username
     totalWidth = 0
     for e, letter in enumerate(username):
         screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
         totalWidth += letterDict[letter].get_width()
 
+    ## Render password
     totalWidth = 0
     for e, letter in enumerate(password):
         if hide == False:
@@ -357,20 +389,26 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
 
 def checkValidUser(username, password):
     isValid = False
+
+    ## Test lengths of username and password to both be > 6
     if len(username) >= 6 and len(password) >= 6: isValid = True
     elif len(username) < 6: isValid = 2
     elif len(password) < 6: isValid = 0
     return isValid
 
 def storeNewUser(username, password):
+    ## Open file for appending
     userFile = open("userFile.txt", "a")
+    ## Append user profile
     userFile.write(username+";"+password+"\n")
+    ## Close file
     userFile.close()
 
 def displayHelpScreen(screen):
     mouseDown = False
-    # Event Loop
+    ## Event Loop
     for event in pygame.event.get():
+        ## Check Quit event
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
