@@ -1,7 +1,7 @@
 ## bw_Lib.py
 ##
 ## Written by Matthew Egan
-## Last Revision: 19th August 2013
+## Last Revision: 26th August 2013
 
 ## Import all needed libraries
 
@@ -45,6 +45,7 @@ class Button:
         else:
             return False
 
+## Displays the title screen and handles related actions
 def displayTitleScreen(screen):
     mouseDown = False
     ## Event Loop
@@ -115,6 +116,7 @@ def displayTitleScreen(screen):
 
     return screenToGo
 
+## Displays the login screen and handles related actions
 def displayLoginScreen(screen, username, password, onUserField, onPassField, hide):
     mouseDown = False
     ## Event Loop
@@ -173,7 +175,7 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
     tickBoxImg = pygame.image.load(tickBoxSrc).convert_alpha()
 
     ## Load Letters
-    letterDict = {} # A->Z->a->z filled
+    letterDict = {} ## A->Z->a->z filled
     for letterFile in os.listdir("rsrc/large/alphabet"):
         if letterFile == "asterisk.png":
             asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
@@ -249,6 +251,7 @@ def displayLoginScreen(screen, username, password, onUserField, onPassField, hid
 
     return screenToGo, username, password, onUserField, onPassField, hide
 
+## Confirms if the username and password exist in the user file
 def checkLogin(username, password):
     ## Open file for reading and convert to array
     userFile = open("userFile.txt", "rU")
@@ -265,6 +268,7 @@ def checkLogin(username, password):
 
     return isValid
 
+## Displays the new user screen and handles related actions
 def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     mouseDown = False
     hide = True
@@ -321,7 +325,7 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
     exitImg = pygame.image.load(exitSrc).convert_alpha()
 
     ## Load Letters
-    letterDict = {} # A->Z->a->z filled
+    letterDict = {} ## A->Z->a->z filled
     for letterFile in os.listdir("rsrc/large/alphabet"):
         if letterFile == "asterisk.png":
             asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
@@ -387,6 +391,7 @@ def displayNewUserScreen(screen, username, password, onUserField, onPassField):
 
     return screenToGo, username, password, onUserField, onPassField
 
+## Confirms if the username and password are of appropriate length
 def checkValidUser(username, password):
     isValid = False
 
@@ -396,6 +401,7 @@ def checkValidUser(username, password):
     elif len(password) < 6: isValid = 0
     return isValid
 
+## Writes a new user profile to the user file
 def storeNewUser(username, password):
     ## Open file for appending
     userFile = open("userFile.txt", "a")
@@ -404,6 +410,7 @@ def storeNewUser(username, password):
     ## Close file
     userFile.close()
 
+## Displays the help screen and handles related actions
 def displayHelpScreen(screen):
     mouseDown = False
     ## Event Loop
@@ -412,31 +419,33 @@ def displayHelpScreen(screen):
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        ## Check MouseDown event
         elif event.type == MOUSEBUTTONDOWN:
             mouseDown = True
 
+    ## Set image paths
     bgImageSrc = "rsrc/large/title_BG.png"
     helpTxtSrc = "rsrc/large/help_Text.png"
     helpBodySrc = "rsrc/large/help_Body.png"
     helpDoneSrc = "rsrc/large/help_Done.png"
 
-    # Load Images
+    ## Load Images
     bgImage = pygame.image.load(bgImageSrc).convert_alpha()
     helpTxtImg = pygame.image.load(helpTxtSrc).convert_alpha()
     helpBodyImg = pygame.image.load(helpBodySrc).convert_alpha()
     helpDoneImg = pygame.image.load(helpDoneSrc).convert_alpha()
 
-    # Create Buttons
+    ## Create Buttons
     doneBtn = Button(helpDoneImg, LRG_HELP_DONE_POS)
 
-    # Handle Actions
+    ## Evaluate Actions
     mousePos = pygame.mouse.get_pos()
     if mouseDown:
         if doneBtn.checkTouch(mousePos): screenToGo = TITLE
         else: screenToGo = HELP
     else: screenToGo = HELP
 
-    # Render
+    ## Render screen
     screen.blit(bgImage, ORIGIN)
 
     screen.blit(helpTxtImg, LRG_HELP_TITLE_POS)
@@ -445,151 +454,201 @@ def displayHelpScreen(screen):
 
     return screenToGo
 
+## Sequentially runs the game process
 def playGame(screen, user):
+    ## Start game
     score = playScrollingTextGame(screen)
+
+    ## Submit score
     submitScore(user, score, "scores_alltime.txt")
+
+    ## Start store screen
     avatar = openStoreScreen(screen, score)
-    #avatar.displayStats()
+
+    ## Start final screen
     playBattleScene(screen, avatar)
     screenToGo = TITLE
     return screenToGo
 
+## Displays the main game screen and handles related actions
 def playScrollingTextGame(screen):
     running = True
     score = 0
 
+    ## Create array of words to type
     wordList = readFileIntoArray("wordList.txt")
     for e, word in enumerate(wordList):
         wordList[e] = word.strip("\r\n")
 
+    ## Make array pseudo-random
     wordList = sattoloShuffle(wordList)
 
+    ## Create timer
     startTime = time.time()
+    
     currentWord = ""
     wordOnScreen = ""
     newWord = True
 
-    # Game Loop
+    ## Game Loop
     while running:
-        # Event Loop
+        ## Event Loop
         for event in pygame.event.get():
+            ## Check Quit event
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            ## Check KeyDown event
             elif event.type == KEYDOWN:    
                 if event.key <= K_z and event.key >= K_a:
                         currentWord += str(pygame.key.name(event.key))
                 elif event.key == K_BACKSPACE:
                     currentWord = currentWord[:-1]
-                #print currentWord, wordOnScreen
 
+        ## Set background image path
         bgImageSrc = "rsrc/large/title_BG.png"
 
+        ## Load background image
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
 
+        ## Check whether a new word needs to be chosen
         if newWord:
             wordOnScreen = wordList[score]
             wordList.remove(wordOnScreen)
             newWord = False
 
-        # Load Letters
-        letterDict = {} # A->Z->a->z filled
+        ## Load Letters
+        letterDict = {} ## A->Z->a->z filled
         for letterFile in os.listdir("rsrc/large/alphabet"):
             if letterFile == "asterisk.png":
                 asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            ## Filter files in directory
             elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/large/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
         
-        # Load Numbers
-        numberDict = {} # 1->9->0 filled
+        ## Load Numbers
+        numberDict = {} ## 1->9->0 filled
         for numberFile in os.listdir("rsrc/large/numbers"):
-            if numberFile[0] != "y": # b: yellow; y: blue
+            if numberFile[0] != "y": ## b: yellow numbers; y: blue numbers
                 newNumberPath = "rsrc/large/numbers/" + numberFile
                 newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
                 numberDict[numberFile[1]] = newNumberImage
         
+        ## Set image paths
         barSrc = "rsrc/large/game_Bar.png"
         fieldSrc = "rsrc/large/game_Field.png"
         typewordSrc = "rsrc/large/game_TypeWord.png"
         clockSrc = "rsrc/large/game_Clock.png"
             
+        ## Load images
         barImg = pygame.image.load(barSrc).convert_alpha()
         fieldImg = pygame.image.load(fieldSrc).convert_alpha()
         typewordImg = pygame.image.load(typewordSrc).convert_alpha()
         clockImg = pygame.image.load(clockSrc).convert_alpha()
         
+        ## Render background image
         screen.blit(bgImage, ORIGIN)
 
+        ## Convert timer to count down
         currentTime = time.time()
         elapsedTime = currentTime - startTime
-        #writeText(screen, str(elapsedTime), ORIGIN)
         if elapsedTime >= 30:
             running = False
 
+        ## Render screen
         screen.blit(barImg, LRG_GAME_BAR)
         screen.blit(fieldImg, LRG_GAME_FIELD)
         screen.blit(typewordImg, LRG_GAME_TYPE)
         screen.blit(clockImg, LRG_GAME_CLOCK)
                           
-        # Display current word to type
+        ## Render current word to type
         totalWidth = 0
         for e, letter in enumerate(wordOnScreen):
             screen.blit(letterDict[letter], (LRG_USERNAME_START_POS[0] + totalWidth, LRG_USERNAME_START_POS[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
     
-        # Display current typing progress of word
+        ## Render current typing progress of word
         totalWidth = 0
         for e, letter in enumerate(currentWord):
             screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + totalWidth, LRG_GAME_CRTWORD[1] - letterDict[letter].get_height()))
             totalWidth += letterDict[letter].get_width()
             
-        # Display score
+        ## Render score
         totalWidth = 0
         for e, number in enumerate(str(int(30-elapsedTime))):
             screen.blit(numberDict[number], (LRG_GAME_CLOCK[0]+25 + totalWidth, LRG_GAME_CLOCK[1]+20+(94/2) - numberDict[number].get_height()))
             totalWidth += numberDict[number].get_width()
         
+        ## Check if word has been completely typed
         if currentWord == wordOnScreen:
             newWord = True
             currentWord = ""
             score += 1     
 
+        ## Update screen
         pygame.display.update()
+
     return score
 
+## Reads a file into an array
 def readFileIntoArray(fileName):
+    ## For files that exist
     try:
+        ## Open file
         f = open(fileName)
+        ## Read file into array via list comprehension
         array = [line for line in f]
+        ## Close file
         f.close()
+    ## For files that do not exist
     except:
         array = None
     return array
 
+## Shuffles an array in place
 def sattoloShuffle(array):
+    ## Get length of array
     i = len(array)
+
+    ## Loop through array backwards
     while i > 1:
         i -= 1
         j = random.randint(0, i)
+        ## Swap array[j] with array[i] in place
         array[j], array[i] = array[i], array[j]
     return array
 
+## Displays plain text on screen
+## Used for debugging purposes only
 def writeText(screen, text, location):
+    ## Initialise font engine
     pygame.font.init()
+
+    ## Define font and size
     font = pygame.font.Font(None, 16)
+
+    ## Create screen object
     obj = font.render(text, 1, (0,0,0))
+
+    ## Render text on screen
     screen.blit(obj, location)
 
+## Class used to store different user attributes
 class Avatar:
+    ## Initialisation method
     def __init__(self, attack, armor, magic):
         self.attack = attack
         self.armor = armor
         self.magic = magic
+
+    ## Display stats in order
+    ## Used only for debugging
     def displayStats(self):
         print self.attack, self.armor, self.magic
         
+## Displays the store screen and handles related actions
 def openStoreScreen(screen, score):
     mouseDown = False
     running = True
@@ -597,14 +656,17 @@ def openStoreScreen(screen, score):
     avatar = Avatar(0, 0, 0)
 
     while running:
-        # Event Loop
+        ## Event Loop
         for event in pygame.event.get():
+            ## Check Quit event
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            ## Check MouseDown event
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
                 
+        ## Set image paths
         bgImageSrc = "rsrc/large/title_BG.png"
         storeTextSrc = "rsrc/large/sText.png"
         attackSrc = "rsrc/large/attack.png"
@@ -615,8 +677,8 @@ def openStoreScreen(screen, score):
         storePlusSrc = "rsrc/large/plusBox.png"
         doneSrc = "rsrc/large/help_Done.png"
 
+        ## Load images
         doneImg = pygame.image.load(doneSrc).convert_alpha()
-
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
         storeText = pygame.image.load(storeTextSrc).convert_alpha()
         attackImg = pygame.image.load(attackSrc).convert_alpha()
@@ -626,21 +688,21 @@ def openStoreScreen(screen, score):
         storeBodyImg = pygame.image.load(storeBodySrc).convert_alpha()
         storePlusImg = pygame.image.load(storePlusSrc).convert_alpha()       
                 
-        # Load Numbers
-        numberDict = {} # A->Z->a->z filled
+        ## Load Numbers
+        numberDict = {} ## 1->9->0 filled
         for numberFile in os.listdir("rsrc/large/numbers"):
-            if numberFile[0] != "y":
+            if numberFile[0] != "y": ## b: yellow numbers; y: blue numbers
                 newNumberPath = "rsrc/large/numbers/" + numberFile
                 newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
                 numberDict[numberFile[1]] = newNumberImage
 
-        # Create Buttons
+        ## Create Buttons
         doneBtn = Button(doneImg, LRG_STORE_DONE_POS)
         attBtn = Button(storePlusImg, LRG_ATK_PLS_POS)
         arrBtn = Button(storePlusImg, LRG_ARR_PLS_POS)
         magBtn = Button(storePlusImg, LRG_MAG_PLS_POS)
 
-        # Handle Actions
+        ## Evaluate Actions
         mousePos = pygame.mouse.get_pos()
         if mouseDown:
             if doneBtn.checkTouch(mousePos): 
@@ -656,8 +718,7 @@ def openStoreScreen(screen, score):
                     score -= 1
             mouseDown = False
 
-        #print avatar.attack, avatar.armor, avatar.magic , score
-
+        ## Render Screen
         screen.blit(bgImage, ORIGIN)
                 
         screen.blit(storeText, LRG_HELP_TITLE_POS)
@@ -671,52 +732,57 @@ def openStoreScreen(screen, score):
         screen.blit(storePlusImg, LRG_MAG_PLS_POS)
         screen.blit(doneImg, LRG_STORE_DONE_POS)
 
-        # Display points left
+        ## Render points left
         totalWidth = 0
         for e, number in enumerate(str(score)):
             screen.blit(numberDict[number], (LRG_PTNSLFT_POS[0]+100 + totalWidth, LRG_PTNSLFT_POS[1]+100 - numberDict[number].get_height()))
             totalWidth += numberDict[number].get_width()
 
-        # Display attack
+        ## Render attack
         totalWidth = 0
         for e, number in enumerate(str(avatar.attack)):
             screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ATK_PLS_POS[1]+10))
             totalWidth += numberDict[number].get_width()
 
-        # Display armor
+        ## Render armor
         totalWidth = 0
         for e, number in enumerate(str(avatar.armor)):
             screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_ARR_PLS_POS[1]+10))
             totalWidth += numberDict[number].get_width()
 
-        # Display magic
+        ## Render magic
         totalWidth = 0
         for e, number in enumerate(str(avatar.magic)):
             screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, LRG_MAG_PLS_POS[1]+10))
             totalWidth += numberDict[number].get_width()    
                 
+        ## Update screen
         pygame.display.update()
     return avatar
 
+## Displays the final screen
 def playBattleScene(screen, avatar):
     startTime = time.time()
     running = True
     while running:
 
-        # Load Letters
-        letterDict = {} # A->Z->a->z filled
+        ## Load Letters
+        letterDict = {} ## A->Z->a->z filled
         for letterFile in os.listdir("rsrc/large/alphabet"):
             if letterFile == "asterisk.png":
                 asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            ## Filter files in directory
             elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/large/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
 
+        ## Load background image and render
         bgImageSrc = "rsrc/large/title_BG.png"
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
         screen.blit(bgImage, ORIGIN)
 
+        ## Create message
         msg = "Congratulations"
         totalWidth = 0
         for letter in msg:
@@ -728,6 +794,7 @@ def playBattleScene(screen, avatar):
         elif avatar.magic > avatar.attack and avatar.magic > avatar.armor: msg = "You are a mage"
         else: msg = "You are awesome"
 
+        ## Render message
         totalWidth = 0
         for letter in msg:
             if letter != ' ':
@@ -736,84 +803,104 @@ def playBattleScene(screen, avatar):
             else:
                 totalWidth += 20
 
+        ## Display screen for 5 seconds
         if time.time() - startTime >= 5:
             running = False
 
+        ## Update screen
         pygame.display.update()
 
+## Writes a users score to a score file
 def submitScore(user, score, fileName):
+    ## Open file for appending
     scoreFile = open(fileName, "a")
     
-    # Get current date from OS
+    ## Get current date from OS
     today = datetime.date.today()
+
+    ## Convert date to ordinal integer
     date2rec = str(datetime.date.toordinal(today)) + ';\n'
     
-    # Scores stored in format (user; score; date)
+    ## Scores stored in format (user; score; date)
     scoreFile.write(str(user) + ';' + str(score) + ';' + str(date2rec))
+    
+    ## Close file
     scoreFile.close()
 
+## Sorts all user scores
 def sortAllTimeScores(filename):
+    ## Get all scores as array
     arrayOfScores = readFileIntoArray(filename)
     for e, element in enumerate(arrayOfScores):
-        # Split element into attributes - (UserWarning;score;timeAsOrdinal)
+        ## Split element into attributes - (user;score;timeAsOrdinal)
         arrayOfScores[e] = element.split(';')[:3]
-    
-    #for x in arrayOfScores:
-    #    print x
 
-    # Sort by score - decending
+    ## Sort by score - decending
     arrayOfScores.sort(key=lambda x: int(x[1]))
     arrayOfScores.reverse()
     
-    # Re-join all attributes into single element - 1D array of strings
+    ## Re-join all attributes into single element - 1D array of strings
     for e, element in enumerate(arrayOfScores):
         arrayOfScores[e] = ';'.join(element)
         arrayOfScores[e] = arrayOfScores[e] + ';\n'
 
-    # Overwrite file
+    ## Overwrite file
     fileToWrite = open(filename, "w+a")
     for element in arrayOfScores:
         fileToWrite.write(element)
-    #fileToWrite.write('\n')
+
+    ## Close file
     fileToWrite.close()
 
+## Sorts all daily scores
 def sortDailyScores(allScores, dailyScores):
+    ## Get all scores as array
     arrayOfScores = readFileIntoArray(allScores)
+
     for e, element in enumerate(arrayOfScores):
-        # Split element into attributes - (UserWarning;score;timeAsOrdinal)
+        ## Split element into attributes - (user;score;timeAsOrdinal)
         arrayOfScores[e] = element.split(';')[:3]
 
+    ## Find all scores that were not set today
     today = datetime.date.today()
     arrayOfIndexs = []
     for e, element in enumerate(arrayOfScores):
         if element[2] != str(datetime.date.toordinal(today)):
             arrayOfIndexs.append(e)
 
+    ## Delete all scores that weren't set today
+    ## Must be deleted in reverse order so to keep index positions
     arrayOfIndexs.reverse()
     for i in arrayOfIndexs:
         print i
         del arrayOfScores[i]
 
-    # Sort by score - decending
+    ## Sort by score - decending
     arrayOfScores.sort(key=lambda x: int(x[1]))
     arrayOfScores.reverse()
 
-    # Re-join all attributes into single element - 1D array of strings
+    ## Re-join all attributes into single element - 1D array of strings
     for e, element in enumerate(arrayOfScores):
         arrayOfScores[e] = ';'.join(element)
         arrayOfScores[e] = arrayOfScores[e] + ';\n'
 
-    # Overwrite file
+    ## Overwrite file
     fileToWrite = open(dailyScores, "w+a")
     for element in arrayOfScores:
         fileToWrite.write(element)
-    #fileToWrite.write('\n')
+
+    ## Close file
     fileToWrite.close()
 
+## Reduces score files down to 3 entries
 def parseScores(filename):
+    ## Get scores as array
     arrayOfScores = readFileIntoArray(filename)
 
+    ## Open file for write and append
     fileToWrite = open(filename, "w+a")
+
+    ## Reduce file down to 3 entries
     for e, element in enumerate(arrayOfScores):
         if len(arrayOfScores) > 3:
             if e < 3:
@@ -822,20 +909,26 @@ def parseScores(filename):
                 break
         else:
             fileToWrite.write(element)
+
+    ## Close file
     fileToWrite.close()
 
+## Displays the high scores screen and handles any related actions
 def displayHighScores(screen):
     mouseDown = False
     running = True
     while running:
-        # Event Loop
+        ## Event Loop
         for event in pygame.event.get():
+            ## Check Quit event
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            ## Check MouseDown event
             elif event.type == MOUSEBUTTONDOWN:
                 mouseDown = True
 
+        ## Set image paths
         bgImageSrc = "rsrc/large/title_BG.png"
         highScoreTxtSrc = "rsrc/large/leader_Text.png"
         dailySrc = "rsrc/large/leader_Daily.png"
@@ -845,7 +938,7 @@ def displayHighScores(screen):
         barSrc = "rsrc/large/leader_Bar.png"
         doneBtnSrc = "rsrc/large/help_Done.png"
 
-        # Load Images
+        ## Load Images
         bgImage = pygame.image.load(bgImageSrc).convert_alpha()
         highScoreImg = pygame.image.load(highScoreTxtSrc).convert_alpha()
         dailyImg = pygame.image.load(dailySrc).convert_alpha()
@@ -855,28 +948,29 @@ def displayHighScores(screen):
         barImg = pygame.image.load(barSrc).convert_alpha()
         doneBtnImg = pygame.image.load(doneBtnSrc).convert_alpha()
 
-        # Load Numbers
-        numberDict = {} # A->Z->a->z filled
+        ## Load Numbers
+        numberDict = {} ## 1->9->0 filled
         for numberFile in os.listdir("rsrc/large/numbers"):
-            if numberFile[0] != "b": # Yellow Numbers
+            if numberFile[0] != "b": ## b: yellow numbers; y: blue numbers
                 newNumberPath = "rsrc/large/numbers/" + numberFile
                 newNumberImage = pygame.image.load(newNumberPath).convert_alpha()
                 numberDict[numberFile[1]] = newNumberImage
 
-        # Load Letters
-        letterDict = {} # A->Z->a->z filled
+        ## Load Letters
+        letterDict = {} ## A->Z->a->z filled
         for letterFile in os.listdir("rsrc/large/alphabet"):
             if letterFile == "asterisk.png":
                 asteriskImage = pygame.image.load("rsrc/large/alphabet/asterisk.png").convert_alpha()
+            ## Filter files in directory
             elif letterFile[0] != "." and letterFile[-3:] != ".py":
                 newLetterPath = "rsrc/large/alphabet/" + letterFile
                 newLetterImage = pygame.image.load(newLetterPath).convert_alpha()
                 letterDict[letterFile[2]] = newLetterImage
 
-        # Create Buttons
+        ## Create Buttons
         doneBtn = Button(doneBtnImg, LRG_HELP_DONE_POS)
 
-        # Handle Actions
+        ## Evaluate Actions
         mousePos = pygame.mouse.get_pos()
         if mouseDown:
             if doneBtn.checkTouch(mousePos): 
@@ -884,7 +978,7 @@ def displayHighScores(screen):
                 running = False
             mouseDown = False
 
-        # Render
+        ## Render screen
         screen.blit(bgImage, ORIGIN)
 
         screen.blit(highScoreImg, LRG_LEADER_TITLE_POS)
@@ -895,21 +989,19 @@ def displayHighScores(screen):
         screen.blit(scoreImg, LRG_LEADER_DSCORE)
         screen.blit(barImg, LRG_LEADER_DBAR)
 
-        # Display Daily Scores
-        # Display All Time Scores
-        a = readFileIntoArray("scores_daily.txt")
+        ## Render Daily Scores
         parseScores("scores_daily.txt")
         arrayOfScores = readFileIntoArray("scores_daily.txt")
         for e, element in enumerate(arrayOfScores):
             arrayOfScores[e] = element.split(';')
 
-            # Display score
+            ## Render score
             totalWidth = 0
             for number in arrayOfScores[e][1]:
                 screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
                 totalWidth += numberDict[number].get_width()
 
-            # Display Username
+            ## Render Username
             totalWidth = 0
             for letter in arrayOfScores[e][0]:
                 screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230-470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
@@ -920,24 +1012,25 @@ def displayHighScores(screen):
         screen.blit(scoreImg, LRG_LEADER_ASCORE)
         screen.blit(barImg, LRG_LEADER_ABAR)
 
-        # Display All Time Scores
+        ## Render All Time Scores
         parseScores("scores_alltime.txt")
         arrayOfScores = readFileIntoArray("scores_alltime.txt")
         for e, element in enumerate(arrayOfScores):
             arrayOfScores[e] = element.split(';')
 
-            # Display Username
+            ## Render Username
             totalWidth = 0
             for letter in arrayOfScores[e][0]:
                 screen.blit(letterDict[letter], (LRG_GAME_CRTWORD[0] + 230 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
                 totalWidth += letterDict[letter].get_width()
 
-            # Display score
+            ## Render score
             totalWidth = 0
             for number in arrayOfScores[e][1]:
                 screen.blit(numberDict[number], (LRG_ATK_PLS_POS[0]-75 + 470 + totalWidth, (LRG_MAG_PLS_POS[1]-70 + (e*60))))
                 totalWidth += numberDict[number].get_width()
 
+        ## Update screen
         pygame.display.update()
 
     return screenToGo
