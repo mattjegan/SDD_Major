@@ -1,6 +1,15 @@
 from testSuite import *
 
 def main():
+    print "IMPORTANT: Before running the tests please"
+    print "ensure that:"
+    print "    scores_alltime.txt is empty"
+    print "    score_daily.txt is empty"
+    print "    userFile.txt contains \"matthew;egannn\\n\""
+    print "    wordList.txt is not empty"
+    print "    empty.txt is empty"
+    raw_input("Press enter when ready: ")
+
     print "--- Running Tests ---"
 
     print "    Beginning: checkLoginDriver"

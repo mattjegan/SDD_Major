@@ -522,9 +522,12 @@ def playScrollingTextGame(screen):
     return score
 
 def readFileIntoArray(fileName):
-    f = open(fileName)
-    array = [line for line in f]
-    f.close()
+    try:
+        f = open(fileName)
+        array = [line for line in f]
+        f.close()
+    except:
+        array = None
     return array
 
 def sattoloShuffle(array):
