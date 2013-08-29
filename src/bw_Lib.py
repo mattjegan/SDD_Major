@@ -477,8 +477,9 @@ def playScrollingTextGame(screen):
 
     ## Create array of words to type
     wordList = readFileIntoArray("wordList.txt")
+    wordList = wordList[0].split("\r")
     for e, word in enumerate(wordList):
-        wordList[e] = word.strip("\r\n")
+        wordList[e] = word.strip()
 
     ## Make array pseudo-random
     wordList = sattoloShuffle(wordList)
